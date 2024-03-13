@@ -1,5 +1,6 @@
-package com.openclassroom.orion.model;
+package com.openclassroom.orion.module.article.model;
 
+import com.openclassroom.orion.module.user.model.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.Getter;

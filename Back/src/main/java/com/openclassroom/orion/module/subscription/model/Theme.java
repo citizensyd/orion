@@ -1,4 +1,4 @@
-package com.openclassroom.orion.model;
+package com.openclassroom.orion.module.subscription.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
