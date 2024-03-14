@@ -1,6 +1,6 @@
 package com.openclassroom.orion.module.subscription.controller;
 
-import com.openclassroom.orion.module.subscription.dao.SubscriptionRequest;
+import com.openclassroom.orion.module.subscription.dto.SubscriptionRequest;
 import com.openclassroom.orion.module.subscription.model.Theme;
 import com.openclassroom.orion.module.subscription.service.SubscriptionService;
 import org.springframework.http.ResponseEntity;

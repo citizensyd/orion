@@ -1,4 +1,4 @@
-package com.openclassroom.orion.module.subscription.dao;
+package com.openclassroom.orion.module.subscription.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

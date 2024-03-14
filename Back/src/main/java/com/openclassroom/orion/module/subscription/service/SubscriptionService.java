@@ -1,6 +1,6 @@
 package com.openclassroom.orion.module.subscription.service;
 
-import com.openclassroom.orion.module.subscription.dao.SubscriptionRequest;
+import com.openclassroom.orion.module.subscription.dto.SubscriptionRequest;
 import com.openclassroom.orion.module.subscription.model.Subscription;
 import com.openclassroom.orion.module.subscription.model.SubscriptionId;
 import com.openclassroom.orion.module.subscription.model.Theme;
