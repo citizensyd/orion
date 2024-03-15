@@ -6,7 +6,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.FileSystemResource;
 
 @Configuration
-public class AppConfig {
+public class EnvironmentConfig {
 
     /**
      * Instantiate and configure a PropertySourcesPlaceholderConfigurer.

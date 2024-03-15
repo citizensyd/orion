@@ -1,5 +1,6 @@
 package com.openclassroom.orion.module.subscription.controller;
 
+import com.openclassroom.orion.module.subscription.dto.SubscriptionDTO;
 import com.openclassroom.orion.module.subscription.dto.SubscriptionRequest;
 import com.openclassroom.orion.module.subscription.model.Theme;
 import com.openclassroom.orion.module.subscription.service.SubscriptionService;
@@ -32,8 +33,8 @@ public class SubscriptionController {
     }
     // Endpoint pour obtenir la liste des thèmes auxquels un utilisateur est abonné
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Theme>> getSubscriptionsByUser(@PathVariable Long userId) {
-        List<Theme> subscriptions = subscriptionService.getSubscriptionsByUser(userId);
+    public ResponseEntity<List<SubscriptionDTO>> getSubscriptionsByUser(@PathVariable Long userId) {
+        List<SubscriptionDTO> subscriptions = subscriptionService.getSubscriptionsByUser(userId);
         if (subscriptions.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

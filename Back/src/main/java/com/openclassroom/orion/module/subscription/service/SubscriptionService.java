@@ -1,5 +1,6 @@
 package com.openclassroom.orion.module.subscription.service;
 
+import com.openclassroom.orion.module.subscription.dto.SubscriptionDTO;
 import com.openclassroom.orion.module.subscription.dto.SubscriptionRequest;
 import com.openclassroom.orion.module.subscription.model.Subscription;
 import com.openclassroom.orion.module.subscription.model.SubscriptionId;
@@ -28,13 +29,13 @@ public class SubscriptionService {
         this.userRepository = userRepository;
     }
 
-    public List<Theme> getSubscriptionsByUser(Long userId) {
+    public List<SubscriptionDTO> getSubscriptionsByUser(Long userId) {
         // Cette ligne récupère une liste de tous les abonnements où l'user_id correspond à l'userId donné
         List<Subscription> subscriptions = subscriptionRepository.findByUserId(userId);
 
         // Transforme la liste des abonnements en liste de thèmes
         return subscriptions.stream()
-                .map(Subscription::getTheme)
+                .map(this::convertToSubscriptionDTO)
                 .collect(Collectors.toList());
     }
 
@@ -85,7 +86,14 @@ public class SubscriptionService {
         // Supprimer l'abonnement trouvé
         subscriptionRepository.delete(subscriptionOpt.get());
     }
-
+    private SubscriptionDTO convertToSubscriptionDTO(Subscription subscription) {
+        // Crée et retourne un nouveau SubscriptionDTO à partir de l'entité Subscription
+        SubscriptionDTO subscriptionDTO = new SubscriptionDTO();
+        subscriptionDTO.setId(subscription.getUser().getId());
+        subscriptionDTO.setName(subscription.getTheme().getName()); // Adapte cette ligne selon la structure de ton entité Subscription
+        // et ajoute les autres champs nécessaires
+        return subscriptionDTO;
+    }
 
 }
 
