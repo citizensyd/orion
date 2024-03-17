@@ -1,6 +1,7 @@
 package com.openclassroom.orion.module.article.service;
 
 import com.openclassroom.orion.module.article.dto.ArticleDTO;
+import com.openclassroom.orion.module.article.dto.ArticleRequest;
 import com.openclassroom.orion.module.article.exception.ArticleNotFoundException;
 import com.openclassroom.orion.module.article.exception.CustomDataAccessException;
 import com.openclassroom.orion.module.article.model.Article;
@@ -30,7 +31,6 @@ public class ArticleService {
 
     public List<ArticleDTO> getArticlesFeed() {
         try {
-            // Convertir les articles en DTO avant de les retourner
             return articleRepository.findAllByOrderByCreatedAtDesc().stream()
                     .map(this::convertToDTO)
                     .collect(Collectors.toList());
@@ -39,9 +39,9 @@ public class ArticleService {
         }
     }
 
-    public ArticleDTO addArticle(ArticleDTO articleDTO) {
+    public ArticleDTO addArticle(ArticleRequest articleRequest) {
         try {
-            Article article = convertToEntity(articleDTO);
+            Article article = convertToEntity(articleRequest);
             Article savedArticle = articleRepository.save(article);
             return convertToDTO(savedArticle);
         } catch (Exception e) {
@@ -67,14 +67,14 @@ public class ArticleService {
         return articleDTO;
     }
 
-    private Article convertToEntity(ArticleDTO articleDTO) {
+    private Article convertToEntity(ArticleRequest articleRequest) {
         Article article = new Article();
-        article.setTitle(articleDTO.getTitle());
-        article.setContent(articleDTO.getContent());
+        article.setTitle(articleRequest.getTitle());
+        article.setContent(articleRequest.getContent());
 
-        Theme theme = themeRepository.findById(articleDTO.getThemeId())
+        Theme theme = themeRepository.findById(articleRequest.getThemeId())
                 .orElseThrow(() -> new EntityNotFoundException("Thème non trouvé"));
-        User user = userRepository.findById(articleDTO.getUserId())
+        User user = userRepository.findById(articleRequest.getUserId())
                 .orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé"));
 
         article.setTheme(theme);

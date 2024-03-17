@@ -1,7 +1,9 @@
 package com.openclassroom.orion.module.user.controller;
 
+import com.openclassroom.orion.module.user.DTO.RegisterRequest;
 import com.openclassroom.orion.module.user.DTO.UserDTO;
 import com.openclassroom.orion.module.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +21,11 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
+    @Operation(summary = "Inscription d'un nouvel utilisateur",
+            description = "Cette opération permet de créer un nouveau compte utilisateur.")
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
         try {
-            UserDTO newUser = userService.registerNewUser(userDTO);
+            UserDTO newUser = userService.registerNewUser(registerRequest);
 
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         } catch (IllegalStateException e) {

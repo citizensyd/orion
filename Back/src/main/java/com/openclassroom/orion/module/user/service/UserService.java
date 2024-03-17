@@ -2,6 +2,8 @@ package com.openclassroom.orion.module.user.service;
 
 import com.openclassroom.orion.module.subscription.dto.SubscriptionDTO;
 import com.openclassroom.orion.module.subscription.service.SubscriptionService;
+import com.openclassroom.orion.module.user.DTO.RegisterRequest;
+import com.openclassroom.orion.module.user.DTO.UpdateRequest;
 import com.openclassroom.orion.module.user.DTO.UserDTO;
 import com.openclassroom.orion.module.user.model.User;
 import com.openclassroom.orion.module.user.repository.UserRepository;
@@ -27,20 +29,20 @@ public class UserService {
         this.subscriptionService = subscriptionService;
     }
 
-    public UserDTO registerNewUser(UserDTO userDTO) {
-        if (userRepository.existsByEmail(userDTO.getEmail())) {
+    public UserDTO registerNewUser(RegisterRequest registerRequest) {
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new IllegalStateException("Email already in use");
         }
 
-        if (userRepository.existsByUsername(userDTO.getUsername())) {
+        if (userRepository.existsByUsername(registerRequest.getUsername())) {
             throw new IllegalStateException("Username already in use");
         }
 
-        String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
+        String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
 
         User newUser = new User();
-        newUser.setEmail(userDTO.getEmail());
-        newUser.setUsername(userDTO.getUsername());
+        newUser.setEmail(registerRequest.getEmail());
+        newUser.setUsername(registerRequest.getUsername());
         newUser.setPassword(encodedPassword);
 
         User savedUser = userRepository.save(newUser);
@@ -56,23 +58,23 @@ public class UserService {
         return convertToUserDTO(user);
     }
 
-    public UserDTO updateUserProfile(Long userId, UserDTO userDTO) {
+    public UserDTO updateUserProfile(Long userId, UpdateRequest updateRequest) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with id : " + userId));
 
-        if (userDTO.getEmail() != null && !userDTO.getEmail().equals(user.getEmail()) && userRepository.existsByEmail(userDTO.getEmail())) {
+        if (updateRequest.getEmail() != null && !updateRequest.getEmail().equals(user.getEmail()) && userRepository.existsByEmail(updateRequest.getEmail())) {
             throw new IllegalStateException("Email already in use");
         }
 
-        if (userDTO.getUsername() != null && !userDTO.getUsername().equals(user.getUsername()) && userRepository.existsByUsername(userDTO.getUsername())) {
+        if (updateRequest.getUsername() != null && !updateRequest.getUsername().equals(user.getUsername()) && userRepository.existsByUsername(updateRequest.getUsername())) {
             throw new IllegalStateException("Username already in use");
         }
 
-        user.setEmail(userDTO.getEmail() != null ? userDTO.getEmail() : user.getEmail());
-        user.setUsername(userDTO.getUsername() != null ? userDTO.getUsername() : user.getUsername());
+        user.setEmail(updateRequest.getEmail() != null ? updateRequest.getEmail() : user.getEmail());
+        user.setUsername(updateRequest.getUsername() != null ? updateRequest.getUsername() : user.getUsername());
 
-        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        if (updateRequest.getPassword() != null && !updateRequest.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
         }
 
         User updatedUser = userRepository.save(user);

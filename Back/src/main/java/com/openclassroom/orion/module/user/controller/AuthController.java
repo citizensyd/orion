@@ -3,6 +3,7 @@ package com.openclassroom.orion.module.user.controller;
 import com.openclassroom.orion.auth.JWT.JWTservice;
 import com.openclassroom.orion.module.user.DTO.AuthResponse;
 import com.openclassroom.orion.module.user.DTO.LoginRequest;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @Operation(summary = "Connexion d'un utilisateur",
+            description = "Cette opération permet à l'utilisateur de se connecter en validant ses identifiants et en retournant un jeton JWT.")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
