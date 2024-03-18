@@ -1,6 +1,7 @@
 package com.openclassroom.orion.module.subscription.service;
 
 import com.openclassroom.orion.module.subscription.dto.SubscriptionDTO;
+import com.openclassroom.orion.module.subscription.dto.SubscriptionGetByIdRequest;
 import com.openclassroom.orion.module.subscription.dto.SubscriptionRequest;
 import com.openclassroom.orion.module.subscription.model.Subscription;
 import com.openclassroom.orion.module.subscription.model.SubscriptionId;
@@ -29,9 +30,9 @@ public class SubscriptionService {
         this.userRepository = userRepository;
     }
 
-    public List<SubscriptionDTO> getSubscriptionsByUser(Long userId) {
+    public List<SubscriptionDTO> getSubscriptionsByUser(SubscriptionGetByIdRequest subscriptionGetByIdRequest) {
         // Cette ligne récupère une liste de tous les abonnements où l'user_id correspond à l'userId donné
-        List<Subscription> subscriptions = subscriptionRepository.findByUserId(userId);
+        List<Subscription> subscriptions = subscriptionRepository.findByUserId(subscriptionGetByIdRequest.getUserId());
 
         // Transforme la liste des abonnements en liste de thèmes
         return subscriptions.stream()

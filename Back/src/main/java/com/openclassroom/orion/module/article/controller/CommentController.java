@@ -1,3 +1,5 @@
+package com.openclassroom.orion.module.article.controller;
+
 import com.openclassroom.orion.module.article.dto.CommentDTO;
 import com.openclassroom.orion.module.article.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;

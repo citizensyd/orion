@@ -6,6 +6,7 @@ import com.openclassroom.orion.module.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +39,10 @@ public class UserController {
             description = "Mise à jour des informations d'un utilisateur par son ID.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Profil d'utilisateur mis à jour avec succès"),
+                    @ApiResponse(responseCode = "400", description = "Données de la requête invalides", content = @Content()),
                     @ApiResponse(responseCode = "404", description = "Utilisateur non trouvé", content = @Content())
             })
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId, @RequestBody UpdateRequest updateRequest) {
+    public ResponseEntity<UserDTO> updateUser(@Valid @PathVariable Long userId, @RequestBody UpdateRequest updateRequest) {
         UserDTO updatedUserDTO = userService.updateUserProfile(userId, updateRequest);
         return ResponseEntity.ok(updatedUserDTO);
     }

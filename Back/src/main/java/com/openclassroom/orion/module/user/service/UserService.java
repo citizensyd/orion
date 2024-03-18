@@ -1,6 +1,7 @@
 package com.openclassroom.orion.module.user.service;
 
 import com.openclassroom.orion.module.subscription.dto.SubscriptionDTO;
+import com.openclassroom.orion.module.subscription.dto.SubscriptionGetByIdRequest;
 import com.openclassroom.orion.module.subscription.service.SubscriptionService;
 import com.openclassroom.orion.module.user.DTO.RegisterRequest;
 import com.openclassroom.orion.module.user.DTO.UpdateRequest;
@@ -89,7 +90,10 @@ public class UserService {
         userDTO.setId(user.getId());
         userDTO.setUsername(user.getUsername());
         userDTO.setEmail(user.getEmail());
-        List<SubscriptionDTO> subscriptionDTOs = subscriptionService.getSubscriptionsByUser(user.getId());
+
+        SubscriptionGetByIdRequest subscriptionGetByIdRequest = new SubscriptionGetByIdRequest();
+        subscriptionGetByIdRequest.setUserId(user.getId());
+        List<SubscriptionDTO> subscriptionDTOs = subscriptionService.getSubscriptionsByUser(subscriptionGetByIdRequest);
         userDTO.setSubscriptions(subscriptionDTOs);
 
         return userDTO;
