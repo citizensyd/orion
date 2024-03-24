@@ -4,6 +4,10 @@ Back/!.mvn/wrapper/maven-wrapper.jar
 Back/!**/src/main/**/target/
 Back/!**/src/test/**/target/
 
+Front/node_modules
+
+
+
 ### STS ###
 .apt_generated
 .classpath
@@ -30,6 +34,6 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
-.vscode/
+Front/.vscode/
 
 
