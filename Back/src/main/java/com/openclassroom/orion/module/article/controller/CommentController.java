@@ -1,6 +1,7 @@
 package com.openclassroom.orion.module.article.controller;
 
-import com.openclassroom.orion.module.article.dto.CommentDTO;
+import com.openclassroom.orion.module.article.dto.CommentRequest;
+import com.openclassroom.orion.module.article.dto.CommentResponse;
 import com.openclassroom.orion.module.article.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,8 +29,8 @@ public class CommentController {
                     @ApiResponse(responseCode = "400", description = "Informations fournies invalides"),
                     @ApiResponse(responseCode = "404", description = "Article non trouvé")
             })
-    public ResponseEntity<CommentDTO> addCommentToArticle(@PathVariable Long articleId, @RequestBody CommentDTO commentDTO) {
-        CommentDTO savedCommentDTO = commentService.addCommentToArticle(articleId, commentDTO);
-        return new ResponseEntity<>(savedCommentDTO, HttpStatus.CREATED);
+    public ResponseEntity<CommentResponse> addCommentToArticle(@RequestBody CommentRequest commentRequest) {
+        CommentResponse savedCommentResponse = commentService.addCommentToArticle(commentRequest);
+        return new ResponseEntity<>(savedCommentResponse, HttpStatus.CREATED);
     }
 }

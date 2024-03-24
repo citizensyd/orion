@@ -65,19 +65,10 @@ public class SubscriptionController {
                     @ApiResponse(responseCode = "400", description = "Requête invalide, ID utilisateur incorrect"),
                     @ApiResponse(responseCode = "404", description = "Utilisateur non trouvé")
             })
-    public ResponseEntity<List<SubscriptionDTO>> getSubscriptionsByUser(@PathVariable("userId") Long userId) {
-        if (userId == null || userId <= 0) {
-            return ResponseEntity.badRequest().body(null);
-        }
+    public ResponseEntity<List<SubscriptionDTO>> getSubscriptionsByUser() {
 
-        if ( !userRepository.existsById(userId)) {
-            return ResponseEntity.notFound().build();
-        }
 
-        SubscriptionGetByIdRequest request = new SubscriptionGetByIdRequest();
-        request.setUserId(userId);
-
-        List<SubscriptionDTO> subscriptions = subscriptionService.getSubscriptionsByUser(request);
+        List<SubscriptionDTO> subscriptions = subscriptionService.getSubscriptionsByUser();
         if (subscriptions.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

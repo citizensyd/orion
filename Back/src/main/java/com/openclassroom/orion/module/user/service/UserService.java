@@ -1,5 +1,6 @@
 package com.openclassroom.orion.module.user.service;
 
+import com.openclassroom.orion.auth.configuration.CustomUserDetails;
 import com.openclassroom.orion.module.subscription.dto.SubscriptionDTO;
 import com.openclassroom.orion.module.subscription.dto.SubscriptionGetByIdRequest;
 import com.openclassroom.orion.module.subscription.service.SubscriptionService;
@@ -9,6 +10,9 @@ import com.openclassroom.orion.module.user.DTO.UserDTO;
 import com.openclassroom.orion.module.user.model.User;
 import com.openclassroom.orion.module.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,18 +52,21 @@ public class UserService {
 
         User savedUser = userRepository.save(newUser);
 
-        return convertToUserDTO(savedUser);
+        return convertToUserDTORegister(savedUser);
     }
 
 
-    public UserDTO getUserProfile(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with id : " + userId));
+    public UserDTO getUserProfile() {
+        Long currentUserId = getCurrentUserId();
+
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id : " + currentUserId));
 
         return convertToUserDTO(user);
     }
 
-    public UserDTO updateUserProfile(Long userId, UpdateRequest updateRequest) {
+    public UserDTO updateUserProfile(UpdateRequest updateRequest) {
+        Long userId = getCurrentUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with id : " + userId));
 
@@ -83,6 +90,22 @@ public class UserService {
         return convertToUserDTO(updatedUser);
     }
 
+    // Méthode pour obtenir l'ID de l'utilisateur connecté
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new IllegalStateException("Aucun utilisateur connecté");
+        }
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof CustomUserDetails) {
+            return ((CustomUserDetails) principal).getId();
+        } else {
+            throw new IllegalStateException("Le principal actuel n'est pas une instance de CustomUserDetails");
+        }
+    }
+
+
+
 
     private UserDTO convertToUserDTO(User user) {
 
@@ -93,8 +116,18 @@ public class UserService {
 
         SubscriptionGetByIdRequest subscriptionGetByIdRequest = new SubscriptionGetByIdRequest();
         subscriptionGetByIdRequest.setUserId(user.getId());
-        List<SubscriptionDTO> subscriptionDTOs = subscriptionService.getSubscriptionsByUser(subscriptionGetByIdRequest);
+        List<SubscriptionDTO> subscriptionDTOs = subscriptionService.getSubscriptionsByUser();
         userDTO.setSubscriptions(subscriptionDTOs);
+
+        return userDTO;
+    }
+
+    private UserDTO convertToUserDTORegister(User user) {
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setUsername(user.getActualUsername());
+        userDTO.setEmail(user.getEmail());
 
         return userDTO;
     }

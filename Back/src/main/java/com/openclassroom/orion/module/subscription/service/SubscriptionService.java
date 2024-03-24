@@ -1,5 +1,6 @@
 package com.openclassroom.orion.module.subscription.service;
 
+import com.openclassroom.orion.auth.configuration.CustomUserDetails;
 import com.openclassroom.orion.module.subscription.dto.SubscriptionDTO;
 import com.openclassroom.orion.module.subscription.dto.SubscriptionGetByIdRequest;
 import com.openclassroom.orion.module.subscription.dto.SubscriptionRequest;
@@ -9,6 +10,8 @@ import com.openclassroom.orion.module.subscription.model.Theme;
 import com.openclassroom.orion.module.subscription.repository.SubscriptionRepository;
 import com.openclassroom.orion.module.subscription.repository.ThemeRepository;
 import com.openclassroom.orion.module.user.model.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.openclassroom.orion.module.user.repository.UserRepository;
 
@@ -30,9 +33,11 @@ public class SubscriptionService {
         this.userRepository = userRepository;
     }
 
-    public List<SubscriptionDTO> getSubscriptionsByUser(SubscriptionGetByIdRequest subscriptionGetByIdRequest) {
+    public List<SubscriptionDTO> getSubscriptionsByUser() {
+        // Récupération de l'id
+        Long userId = getCurrentUserId();
         // Cette ligne récupère une liste de tous les abonnements où l'user_id correspond à l'userId donné
-        List<Subscription> subscriptions = subscriptionRepository.findByUserId(subscriptionGetByIdRequest.getUserId());
+        List<Subscription> subscriptions = subscriptionRepository.findByUserId(userId);
 
         // Transforme la liste des abonnements en liste de thèmes
         return subscriptions.stream()
@@ -41,10 +46,13 @@ public class SubscriptionService {
     }
 
     public void subscriptionTheme(SubscriptionRequest subscriptionRequest) {
+        // Récupération de l'id
+        Long userId = getCurrentUserId();
+
         // Vérifier si l'utilisateur existe
-        Optional<User> userOpt = userRepository.findById(subscriptionRequest.getUserId());
+        Optional<User> userOpt = userRepository.findById(userId);
         if (userOpt.isEmpty()) {
-            throw new IllegalArgumentException("L'utilisateur avec l'id " + subscriptionRequest.getUserId() + " n'existe pas.");
+            throw new IllegalArgumentException("L'utilisateur avec l'id " + userId + " n'existe pas.");
         }
 
         // Vérifier si le thème existe
@@ -72,9 +80,12 @@ public class SubscriptionService {
     }
 
     public void unsubscriptionTheme(SubscriptionRequest subscriptionRequest) {
+        // Récupération de l'id
+        Long userId = getCurrentUserId();
+
         // Construire la clé composite de l'abonnement pour la recherche
         SubscriptionId subscriptionId = new SubscriptionId();
-        subscriptionId.setUser(subscriptionRequest.getUserId());
+        subscriptionId.setUser(userId);
         subscriptionId.setTheme(subscriptionRequest.getThemeId());
 
         // Vérifier si l'abonnement existe
@@ -94,6 +105,20 @@ public class SubscriptionService {
         subscriptionDTO.setName(subscription.getTheme().getName()); // Adapte cette ligne selon la structure de ton entité Subscription
         // et ajoute les autres champs nécessaires
         return subscriptionDTO;
+    }
+
+    // Méthode pour obtenir l'ID de l'utilisateur connecté
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new IllegalStateException("Aucun utilisateur connecté");
+        }
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof CustomUserDetails) {
+            return ((CustomUserDetails) principal).getId();
+        } else {
+            throw new IllegalStateException("Le principal actuel n'est pas une instance de CustomUserDetails");
+        }
     }
 
 }

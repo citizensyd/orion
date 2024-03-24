@@ -16,7 +16,7 @@ public class ArticleRequest {
     @Schema(description = "L'ID du thème auquel l'article est associé", example = "3", required = true)
     private Long themeId;
 
-    @Schema(description = "L'ID de l'utilisateur qui a posté l'article", example = "1", required = true)
+    @Schema(description = "L'ID de l'utilisateur qui a posté l'article", example = "3", required = true)
     private Long userId;
 }
 

@@ -4,6 +4,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.openclassroom.orion.auth.DTO.CustomErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassroom.orion.auth.JWT.JWTservice;
+import com.openclassroom.orion.auth.configuration.CustomUserDetails;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,9 +17,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -26,6 +30,8 @@ import java.util.Arrays;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     private final UserDetailsService userDetailsService;
 
@@ -42,6 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * @throws IllegalArgumentException If the Authorization header is invalid or missing.
      */
     private String extractJwtFromHeader(String authHeader) {
+
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             if (authHeader.length() > 7) {
                 return authHeader.substring(7);
@@ -60,9 +67,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * @param userEmail The email of the user whose details are to be loaded.
      * @return The user details.
      */
-    private UserDetails loadUserDetails(String userEmail) {
-        return this.userDetailsService.loadUserByUsername(userEmail);
+    private CustomUserDetails loadUserDetails(String userEmail) {
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+        if (!(userDetails instanceof CustomUserDetails)) {
+            throw new UsernameNotFoundException("L'utilisateur avec l'email " + userEmail + " ne peut pas être converti en CustomUserDetails");
+        }
+        return (CustomUserDetails) userDetails;
     }
+
 
     /**
      * An array of whitelisted paths.
@@ -96,6 +108,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+        logger.info("Tentative d'authentification pour la requête: {}", request.getRequestURI());
         final String authHeader = request.getHeader("Authorization");
         try {
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -104,6 +117,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             String jwt = extractJwtFromHeader(authHeader);
+            logger.info("JWT extrait: {}", jwt);
 
             String userEmail = jwtService.extractEmail(jwt);
 
@@ -113,13 +127,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             UserDetails userDetails = loadUserDetails(userEmail);
+            logger.info("UserDetails chargé pour l'email {}: {}", userEmail, userDetails);
 
-            if (userDetails == null) {
+            if (!(userDetails instanceof CustomUserDetails)) {
+                logger.error("Les UserDetails chargés ne sont pas une instance de CustomUserDetails.");
                 handleJwtError(response, HttpStatus.UNAUTHORIZED, "Invalid token: User details not found");
                 return;
             }
 
-            if (!jwtService.isTokenValid(jwt, userDetails)) {
+            CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
+
+            if (!jwtService.isTokenValid(jwt, customUserDetails)) {
                 handleJwtError(response, HttpStatus.UNAUTHORIZED, "Invalid token: Token is not valid");
                 return;
             }
@@ -128,7 +146,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 // userDetails : les détails de l'utilisateur récupérés à partir du token JWT
 // null : les informations de nom d'utilisateur et de mot de passe (non utilisées dans le contexte JWT)
 // userDetails.getAuthorities() : les autorisations de l'utilisateur obtenues à partir des détails de l'utilisateur
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
 
 // Configure les détails d'authentification à partir de la requête HTTP actuelle
 // Ces détails peuvent inclure des informations telles que l'adresse IP de la demande ou les informations du navigateur
@@ -139,12 +157,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authToken);
 
         } catch (TokenExpiredException e) {
+            logger.warn("Tentative de connexion avec un token expiré.");
             handleJwtError(response, HttpStatus.UNAUTHORIZED, "Token expired");
             return;
         } catch (MalformedJwtException e) {
+            logger.warn("Tentative de connexion avec un token malformé.");
+
             handleJwtError(response, HttpStatus.UNAUTHORIZED, "Malformed token");
             return;
         } catch (Exception e) {
+            logger.warn("Tentative de connexion avec un token invalid.");
             handleJwtError(response, HttpStatus.UNAUTHORIZED, "Invalid token");
             return;
         }

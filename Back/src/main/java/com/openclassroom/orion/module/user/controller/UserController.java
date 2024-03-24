@@ -23,27 +23,27 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    @Operation(summary = "Obtenir le profil d'un utilisateur",
+    @Operation(summary = "Obtenir le profil de l'utilisateur connecté",
             description = "Récupère le profil d'utilisateur par son ID.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Profil d'utilisateur récupéré avec succès"),
                     @ApiResponse(responseCode = "404", description = "Utilisateur non trouvé", content = @Content())
             })
-    public ResponseEntity<UserDTO> getUserProfile(@PathVariable Long userId) {
-        UserDTO userDTO = userService.getUserProfile(userId);
+    public ResponseEntity<UserDTO> getUserProfile() {
+        UserDTO userDTO = userService.getUserProfile();
         return ResponseEntity.ok(userDTO);
     }
 
     @PutMapping("/{userId}")
-    @Operation(summary = "Mettre à jour le profil d'un utilisateur",
+    @Operation(summary = "Mettre à jour le profil de l'utilisateur connecté",
             description = "Mise à jour des informations d'un utilisateur par son ID.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Profil d'utilisateur mis à jour avec succès"),
                     @ApiResponse(responseCode = "400", description = "Données de la requête invalides", content = @Content()),
                     @ApiResponse(responseCode = "404", description = "Utilisateur non trouvé", content = @Content())
             })
-    public ResponseEntity<UserDTO> updateUser(@Valid @PathVariable Long userId, @RequestBody UpdateRequest updateRequest) {
-        UserDTO updatedUserDTO = userService.updateUserProfile(userId, updateRequest);
+    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UpdateRequest updateRequest) {
+        UserDTO updatedUserDTO = userService.updateUserProfile(updateRequest);
         return ResponseEntity.ok(updatedUserDTO);
     }
 

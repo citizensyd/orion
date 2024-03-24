@@ -27,6 +27,7 @@ import java.util.Collections;
 @EqualsAndHashCode
 public class User implements UserDetails {
 
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -76,8 +77,13 @@ public class User implements UserDetails {
         return this.email;
     }
 
+    public String getActualUsername() {
+        return this.username;
+    }
+
     @Override
     public String getPassword() {
         return this.password;
     }
+
 }

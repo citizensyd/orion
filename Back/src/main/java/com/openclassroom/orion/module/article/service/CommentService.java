@@ -1,15 +1,18 @@
 package com.openclassroom.orion.module.article.service;
 
-import com.openclassroom.orion.module.article.dto.CommentDTO;
+import com.openclassroom.orion.auth.configuration.CustomUserDetails;
+import com.openclassroom.orion.module.article.dto.CommentRequest;
+import com.openclassroom.orion.module.article.dto.CommentResponse;
 import com.openclassroom.orion.module.article.exception.ArticleNotFoundException;
 import com.openclassroom.orion.module.article.model.Article;
 import com.openclassroom.orion.module.article.model.Comment;
 import com.openclassroom.orion.module.article.repository.ArticleRepository;
 import com.openclassroom.orion.module.article.repository.CommentRepository;
 import com.openclassroom.orion.module.user.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 @Service
 public class CommentService {
 
@@ -24,14 +27,16 @@ public class CommentService {
     }
 
 // Ajouter un commentaire à un article en utilisant CommentDTO
-    public CommentDTO addCommentToArticle(Long articleId, CommentDTO commentDTO) {
-        Article article = articleRepository.findById(articleId)
+    public CommentResponse addCommentToArticle(CommentRequest commentRequest) {
+        Long currentUserId = getCurrentUserId();
+
+        Article article = articleRepository.findById(commentRequest.getArticleId())
                 .orElseThrow(() -> new ArticleNotFoundException("Article non trouvé"));
 
         Comment comment = new Comment();
-        comment.setContent(commentDTO.getContent());
+        comment.setContent(commentRequest.getContent());
         comment.setArticle(article);
-        comment.setUser(userRepository.findById(commentDTO.getUserId()).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé")));
+        comment.setUser(userRepository.findById(currentUserId).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé")));
 
         Comment savedComment = commentRepository.save(comment);
         return convertToDTO(savedComment);
@@ -56,12 +61,26 @@ public class CommentService {
     }
 
     // Conversion d'une entité Comment en CommentDTO
-    private CommentDTO convertToDTO(Comment comment) {
-        CommentDTO commentDTO = new CommentDTO();
-        commentDTO.setId(comment.getId());
-        commentDTO.setContent(comment.getContent());
-        commentDTO.setArticleId(comment.getArticle().getId());
-        commentDTO.setUserId(comment.getUser().getId());
-        return commentDTO;
+    private CommentResponse convertToDTO(Comment comment) {
+        CommentResponse commentResponse = new CommentResponse();
+        commentResponse.setId(comment.getId());
+        commentResponse.setContent(comment.getContent());
+        commentResponse.setArticleId(comment.getArticle().getId());
+        commentResponse.setUserId(comment.getUser().getId());
+        return commentResponse;
+    }
+
+    // Méthode pour obtenir l'ID de l'utilisateur connecté
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new IllegalStateException("Aucun utilisateur connecté");
+        }
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof CustomUserDetails) {
+            return ((CustomUserDetails) principal).getId();
+        } else {
+            throw new IllegalStateException("Le principal actuel n'est pas une instance de CustomUserDetails");
+        }
     }
 }

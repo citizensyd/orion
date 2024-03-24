@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class SubscriptionGetByIdRequest {
     @Schema(description = "Identifiant unique de l'utilisateur",
-            example = "1",
+            example = "3",
             required = true)
     @NotNull(message = "L'ID de l'utilisateur ne peut pas être nul.")
     @Positive(message = "L'ID de l'utilisateur doit être positif.")
