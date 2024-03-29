@@ -103,10 +103,6 @@ public class UserService {
             throw new IllegalStateException("Le principal actuel n'est pas une instance de CustomUserDetails");
         }
     }
-
-
-
-
     private UserDTO convertToUserDTO(User user) {
 
         UserDTO userDTO = new UserDTO();

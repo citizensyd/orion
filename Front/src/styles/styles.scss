@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+@import 'mixins';
+
+/* taille des logos */
+$logo-small: 150px;
+$logo-medium: 200px;
+$logo-large: 400px;
+
+:root {
+  --logo-small: #{$logo-small};
+  --logo-medium: #{$logo-medium};
+  --logo-large: #{$logo-large};
+}
