@@ -20,8 +20,11 @@ export class AppComponent implements OnInit {
 
   clickedLogin: boolean = false;
   clickedRegister: boolean = false;
+  isLogged$: Observable<boolean>;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {
+    this.isLogged$ = this.authService.$isLogged();
+  }
 
   ngOnInit() {
 

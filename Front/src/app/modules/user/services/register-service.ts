@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {catchError, Observable, throwError} from 'rxjs';
 import { environment } from '../../../../environment/environment';
 import {RegisterRequest} from "../interfaces/register-request.interface";
 import {RegisterResponse} from "../interfaces/register-response.interface";
@@ -16,7 +16,11 @@ export class RegisterService {
   }
 
   register(registerRequest: RegisterRequest): Observable<RegisterResponse> {
-    return this.http.post<RegisterResponse>(`${this.authUrl}/register`, registerRequest);
+    return this.http.post<RegisterResponse>(`${this.authUrl}/register`, registerRequest).pipe(
+      catchError((error) => {
+        return throwError(() => error);
+      })
+    );
   }
 
 }

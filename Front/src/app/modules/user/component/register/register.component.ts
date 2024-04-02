@@ -5,35 +5,43 @@ import {FormsModule} from "@angular/forms";
 import {ButtonComponent} from "../../../../component/button/classique/button.component";
 import {RegisterService} from "../../services/register-service";
 import {RegisterResponse} from "../../interfaces/register-response.interface";
-import {HeaderComponent} from "../header/header.component";
-import {RouterLink} from "@angular/router";
+import {HeaderComponent} from "../../../../component/header/header.component";
+import {Router, RouterLink} from "@angular/router";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
-    LogoComponent, FormsModule, ButtonComponent, HeaderComponent, RouterLink
+    LogoComponent, FormsModule, ButtonComponent, HeaderComponent, RouterLink , NgIf
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
+
   user: RegisterRequest = {
     username: '',
     email: '',
     password: ''
   };
 
-  constructor(private registerService: RegisterService) { }
+  errorMessage: string = '';
+  successMessage: string = '';
+
+  constructor(private registerService: RegisterService, private router: Router) { }
+
   onRegisterSubmit() {
     this.registerService.register(this.user).subscribe({
       next: (response) => {
-        console.log('User registered', response);
-        // Autres logiques
+        this.successMessage = "Enregistrement réussi"
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 3000);
       },
       error: (error) => {
-        console.error('Registration error:', error);
-        // Gérer l'erreur
+        this.errorMessage = error.error || "Une erreur s'est produite durant l'enregistrement.";
+        console.error('Registration error:', error.error);
       }
     });
   }

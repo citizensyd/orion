@@ -4,6 +4,9 @@ body {
   margin: 0;
   padding: 0;
 }
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 
 @import 'mixins';
 
@@ -16,4 +19,15 @@ $logo-large: 400px;
   --logo-small: #{$logo-small};
   --logo-medium: #{$logo-medium};
   --logo-large: #{$logo-large};
+}
+
+ul, li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }

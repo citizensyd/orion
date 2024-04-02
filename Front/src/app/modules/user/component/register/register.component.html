@@ -22,6 +22,16 @@
     </div>
     <button (click)="onRegisterSubmit()">S'inscrire</button>
   </form>
+  <!-- Message de succès -->
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
 
 </div>
 

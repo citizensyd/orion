@@ -1,0 +1,26 @@
+nav {
+  display: none;
+  width: 300px;
+  ul {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+}
+
+.nav-item-active {
+  color: #6C5CCF;
+}
+
+
+@media (min-width: 1024px) {
+  nav {
+    display: block;
+  }
+}
+

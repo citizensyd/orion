@@ -1,5 +1,5 @@
 <div class="app">
-  <div *ngIf="clickedLogin || clickedRegister; else notLogged">
+  <div *ngIf="clickedLogin || clickedRegister || (isLogged$ | async); else notLogged">
       <router-outlet></router-outlet>
   </div>
   <ng-template #notLogged>

@@ -25,4 +25,7 @@ public class UserDTO {
 
     @Schema(description = "La liste des abonnements de l'utilisateur")
     private List<SubscriptionDTO> subscriptions;
+
+    @Schema(description = "Message de confirmation", example = "Création de compte réussi")
+    private String message;
 }

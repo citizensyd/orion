@@ -5,10 +5,10 @@ import {FormsModule} from "@angular/forms";
 import {ButtonComponent} from "../../../../component/button/classique/button.component";
 import {RegisterService} from "../../services/register-service";
 import {RegisterResponse} from "../../interfaces/register-response.interface";
-import {HeaderComponent} from "../header/header.component";
+import {HeaderComponent} from "../../../../component/header/header.component";
 import {LoginRequest} from "../../interfaces/login-request.interface";
 import {AuthService} from "../../services/user-services";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -25,12 +25,11 @@ export class LoginComponent {
     password: ''
   };
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
   onLoginSubmit() {
     this.authService.login(this.user).subscribe({
       next: (response) => {
-        console.log('User connected', response);
-        // Autres logiques
+        this.router.navigate(['/articles']);
       },
       error: (error) => {
         console.error('Connection error:', error);

@@ -1,0 +1,12 @@
+  <img class="hamburger" src="../../../../assets/images/menu.png" alt="menu" (click)="toggleMenu()">
+  <div class="menu" [ngClass]="{'menu-open': menuOpen}">
+    <span (click)="toggleMenu()">X</span>
+    <nav>
+      <ul>
+        <li [ngClass]="{'nav-item-active': isArticlesRouteActive()}"><a href="/articles">Articles</a></li>
+        <li [ngClass]="{'nav-item-active': isThemesRouteActive()}"><a href="/theme">Thèmes</a></li>
+        <li class="flex-large"><a href="/profil"><img src="../assets/images/profile_grey.png" alt="Profil"/></a></li>
+      </ul>
+    </nav>
+  </div>
+
