@@ -1,1 +1,24 @@
 @import 'mixins';
+button{
+  @include button-velvet;
+}
+span{
+  font-size: 16px;
+  font-weight: bold;
+  img{
+    rotate: -90deg;
+    width: 20px;
+    cursor: pointer;
+  }
+}
+.article{
+  display: flex;
+  justify-content: center;
+}
+.button-sorting{
+  display: flex;
+  align-items: center;
+  width: 90%;
+  padding: 25px 5px 25px 0;
+  justify-content: space-between;
+}

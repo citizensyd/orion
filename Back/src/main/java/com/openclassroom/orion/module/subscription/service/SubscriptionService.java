@@ -4,6 +4,7 @@ import com.openclassroom.orion.auth.configuration.CustomUserDetails;
 import com.openclassroom.orion.module.subscription.dto.SubscriptionDTO;
 import com.openclassroom.orion.module.subscription.dto.SubscriptionGetByIdRequest;
 import com.openclassroom.orion.module.subscription.dto.SubscriptionRequest;
+import com.openclassroom.orion.module.subscription.dto.ThemeDTO;
 import com.openclassroom.orion.module.subscription.model.Subscription;
 import com.openclassroom.orion.module.subscription.model.SubscriptionId;
 import com.openclassroom.orion.module.subscription.model.Theme;
@@ -31,6 +32,17 @@ public class SubscriptionService {
         this.themeRepository = themeRepository;
         this.subscriptionRepository = subscriptionRepository;
         this.userRepository = userRepository;
+    }
+
+
+    public List<ThemeDTO> getAllThemes() {
+        // Récupère tous les thèmes à partir du repository
+        List<Theme> themes = themeRepository.findAll();
+
+        // Convertit les entités en DTOs
+        return themes.stream()
+                .map(this::convertToThemeDTO)
+                    .collect(Collectors.toList());
     }
 
     public List<SubscriptionDTO> getSubscriptionsByUser() {
@@ -105,6 +117,13 @@ public class SubscriptionService {
         subscriptionDTO.setName(subscription.getTheme().getName()); // Adapte cette ligne selon la structure de ton entité Subscription
         // et ajoute les autres champs nécessaires
         return subscriptionDTO;
+    }
+
+    private ThemeDTO convertToThemeDTO(Theme theme) {
+        ThemeDTO dto = new ThemeDTO();
+        dto.setId(theme.getId());
+        dto.setName(theme.getName());
+        return dto;
     }
 
     // Méthode pour obtenir l'ID de l'utilisateur connecté

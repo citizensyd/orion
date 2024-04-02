@@ -15,6 +15,11 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadChildren: () => import('./modules/article/article.module').then(m => m.ArticleModule)
   },
+  {
+    path: 'themes',
+    canActivate: [authGuard],
+    loadChildren: () => import('./modules/themes/theme.module').then(m => m.ThemeModule)
+  },
   { path: '404', component: NotFoundComponent },
   { path: '**', redirectTo: '404' }
 ];

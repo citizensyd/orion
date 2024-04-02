@@ -3,6 +3,7 @@ package com.openclassroom.orion.module.subscription.controller;
 import com.openclassroom.orion.module.subscription.dto.SubscriptionDTO;
 import com.openclassroom.orion.module.subscription.dto.SubscriptionGetByIdRequest;
 import com.openclassroom.orion.module.subscription.dto.SubscriptionRequest;
+import com.openclassroom.orion.module.subscription.dto.ThemeDTO;
 import com.openclassroom.orion.module.subscription.service.SubscriptionService;
 import com.openclassroom.orion.module.user.repository.UserRepository;
 import com.openclassroom.orion.module.user.service.UserService;
@@ -26,6 +27,21 @@ public class SubscriptionController {
     public SubscriptionController(SubscriptionService subscriptionService,  UserRepository userRepository) {
         this.subscriptionService = subscriptionService;
         this.userRepository = userRepository;
+    }
+
+    @GetMapping
+    @Operation(summary = "Obtenir tous les thèmes",
+            description = "Retourne la liste de tous les thèmes disponibles.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Liste des thèmes obtenue avec succès", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ThemeDTO.class))}),
+                    @ApiResponse(responseCode = "204", description = "Aucun contenu, aucun thème disponible")
+            })
+    public ResponseEntity<List<ThemeDTO>> getAllThemes() {
+        List<ThemeDTO> themes = subscriptionService.getAllThemes();
+        if (themes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(themes);
     }
 
     // Endpoint pour s'abonner

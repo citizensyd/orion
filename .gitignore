@@ -5,7 +5,7 @@ Back/!**/src/main/**/target/
 Back/!**/src/test/**/target/
 
 Front/node_modules
-
+Front/.angular
 
 
 ### STS ###
