@@ -1,8 +1,14 @@
 <app-header></app-header>
-<section class="article">
-  <div class="button-sorting">
-    <button>Créer un article</button>
-    <span>Trier par <img src="../../../../assets/images/arrow.png" alt="flèche"></span>
-  </div>
-
+<div class="button-sorting">
+  <button>Créer un article</button>
+  <span class="sort-toggle" (click)="toggleSortOrder()">Trier par <img src="../../../../assets/images/arrow.png" alt="flèche" [ngClass]="{
+         'rotate-arrow-asc': isAscending,
+         'rotate-arrow-desc': !isAscending
+       }"></span>
+</div>
+<section class="article" *ngIf="filteredArticles.length > 0; else noArticlesTemplate">
+  <app-card *ngFor="let article of filteredArticles" [article]="article">></app-card>
 </section>
+<ng-template #noArticlesTemplate>
+  <div class="no-articles">{{ noArticlesMessage }}</div>
+</ng-template>

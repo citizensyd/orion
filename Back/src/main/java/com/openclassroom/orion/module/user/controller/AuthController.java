@@ -1,6 +1,7 @@
 package com.openclassroom.orion.module.user.controller;
 
 import com.openclassroom.orion.auth.JWT.JWTservice;
+import com.openclassroom.orion.auth.configuration.CustomUserDetails;
 import com.openclassroom.orion.module.user.DTO.AuthResponse;
 import com.openclassroom.orion.module.user.DTO.LoginRequest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,7 +49,7 @@ public class AuthController {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             String jwt = jswService.generateToken(userDetails);
 
             return ResponseEntity.ok(new AuthResponse(jwt));

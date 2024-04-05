@@ -3,6 +3,8 @@ package com.openclassroom.orion.module.article.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @Schema(description = "Représente un article, incluant son titre, contenu, et les identifiants de son thème et de son auteur")
 public class ArticleDTO {
@@ -19,7 +21,10 @@ public class ArticleDTO {
     @Schema(description = "L'ID du thème auquel l'article est associé", example = "3", required = true)
     private Long themeId;
 
-    @Schema(description = "L'ID de l'utilisateur qui a posté l'article", example = "3", required = true)
-    private Long userId;
+    @Schema(description = "Le nom de l'utilisateur qui a posté l'article", example = "John Doe", required = true)
+    private String userName;
+
+    @Schema(description = "La date à laquelle l'article a été posté", example = "22/05/1984", required = true)
+    private Date createdAt;
 }
 

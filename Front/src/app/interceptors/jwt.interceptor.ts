@@ -6,7 +6,7 @@ export class JwtInterceptor implements HttpInterceptor {
   constructor() {}
 
   public intercept(request: HttpRequest<any>, next: HttpHandler) {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('access_token');
     if (token) {
       request = request.clone({
         setHeaders: {

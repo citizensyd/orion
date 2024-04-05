@@ -113,8 +113,8 @@ public class SubscriptionService {
     private SubscriptionDTO convertToSubscriptionDTO(Subscription subscription) {
         // Crée et retourne un nouveau SubscriptionDTO à partir de l'entité Subscription
         SubscriptionDTO subscriptionDTO = new SubscriptionDTO();
-        subscriptionDTO.setId(subscription.getUser().getId());
-        subscriptionDTO.setName(subscription.getTheme().getName()); // Adapte cette ligne selon la structure de ton entité Subscription
+        subscriptionDTO.setId(subscription.getTheme().getId());
+        subscriptionDTO.setName(subscription.getTheme().getName());
         // et ajoute les autres champs nécessaires
         return subscriptionDTO;
     }
@@ -123,6 +123,7 @@ public class SubscriptionService {
         ThemeDTO dto = new ThemeDTO();
         dto.setId(theme.getId());
         dto.setName(theme.getName());
+        dto.setDescription(theme.getDescription());
         return dto;
     }
 

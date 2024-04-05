@@ -1,0 +1,8 @@
+<div class="card">
+  <h3>{{ theme.name }}</h3>
+  <p>{{ theme.description  | truncate:119 }}</p>
+  <div class="card-button">
+    <button (click)="subscribe(theme.id)">S'abonner</button>
+  </div>
+</div>
+

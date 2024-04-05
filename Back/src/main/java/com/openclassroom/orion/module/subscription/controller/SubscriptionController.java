@@ -15,7 +15,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/subscriptions")
@@ -53,9 +55,11 @@ public class SubscriptionController {
                     @ApiResponse(responseCode = "400", description = "Requête invalide", content = @Content()),
                     @ApiResponse(responseCode = "409", description = "L'utilisateur est déjà abonné à ce thème.")
             })
-    public ResponseEntity<String> subscribeToTheme(@Valid @RequestBody SubscriptionRequest subscriptionRequest) {
+    public ResponseEntity<Map<String, String>> subscribeToTheme(@Valid @RequestBody SubscriptionRequest subscriptionRequest) {
         subscriptionService.subscriptionTheme(subscriptionRequest);
-        return ResponseEntity.ok("Abonnement réalisé avec succès.");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Abonnement réalisé avec succès.");
+        return ResponseEntity.ok(response);
     }
 
     // Endpoint pour se désabonner
@@ -66,13 +70,15 @@ public class SubscriptionController {
                     @ApiResponse(responseCode = "200", description = "Désabonnement réalisé avec succès"),
                     @ApiResponse(responseCode = "400", description = "Requête invalide", content = @Content()),
             })
-    public ResponseEntity<String> unsubscribeFromTheme(@Valid @RequestBody SubscriptionRequest subscriptionRequest) {
+    public ResponseEntity<Map<String, String>> unsubscribeFromTheme(@Valid @RequestBody SubscriptionRequest subscriptionRequest) {
         subscriptionService.unsubscriptionTheme(subscriptionRequest);
-        return ResponseEntity.ok("Désabonnement réalisé avec succès.");
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Désabonnement réalisé avec succès.");
+        return ResponseEntity.ok(response);
     }
 
     // Endpoint pour obtenir la liste des thèmes auxquels un utilisateur est abonné
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user")
     @Operation(summary = "Obtenir les abonnements d'un utilisateur",
             description = "Retourne la liste des thèmes auxquels un utilisateur est abonné en fonction de son ID.",
             responses = {

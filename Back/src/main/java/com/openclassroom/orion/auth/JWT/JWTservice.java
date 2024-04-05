@@ -1,5 +1,6 @@
 package com.openclassroom.orion.auth.JWT;
 
+import com.openclassroom.orion.auth.configuration.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -52,19 +53,20 @@ public class JWTservice {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(CustomUserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
 
     public String generateToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails
+            CustomUserDetails userDetails
     ) {
-        return builder()
+        extraClaims.put("userId", userDetails.getId());
+        return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() +1000 *60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // Fixe la durée à 24 heures
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

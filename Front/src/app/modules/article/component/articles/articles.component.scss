@@ -11,14 +11,60 @@ span{
     cursor: pointer;
   }
 }
+.rotate-arrow-desc {
+  transform: rotate(0deg);
+  transition: transform 0.3s ease-in-out;
+}
+.rotate-arrow-asc {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease-in-out;
+}
+.no-articles{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  text-align: center;
+  padding: 20px;
+}
+.button-sorting{
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 20px 0 20px;
+}
 .article{
   display: flex;
   justify-content: center;
 }
-.button-sorting{
+
+.article {
+  padding: 10px 0 20px 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  width: 90%;
-  padding: 25px 5px 25px 0;
-  justify-content: space-between;
+  margin-top: 10px;
+}
+
+app-card {
+  margin-bottom: 15px;
+  width: 95%;
+
+}
+
+@media (min-width: 1024px) {
+  .article {
+    padding: 20px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  app-card {
+    width: calc(33.333% - 5px); /* Adjust the width to account for margin */
+    margin-right: 5px;
+  }
+
+  app-card:nth-child(3n) {
+    margin-right: 0; /* Remove margin for every third element */
+  }
 }
