@@ -6,4 +6,5 @@ export interface ArticleDTO {
   themeId: number;
   userId: number;
   userName: string;
+  theme: string;
 }

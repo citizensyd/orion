@@ -1,8 +1,9 @@
-<div class="card">
+<a [routerLink]="['/articles', article.id]" class="card">
   <h3>{{ article.title }}</h3>
   <div class="card-date-user">
     <span>{{ article.createdAt | date:'dd-MM-yyyy' }}</span><span>{{ article.userName }}</span>
   </div>
-  <p>{{ article.content  | truncate:119 }}</p>
-</div>
+  <p>{{ article.content | truncate:119 }}</p>
+</a>
+
 

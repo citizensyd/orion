@@ -10,6 +10,9 @@ public class CommentResponse {
     @Schema(description = "L'ID unique du commentaire", example = "10", required = false)
     private Long id;
 
+    @Schema(description = "Le nom de l'utilisateur", example = "John Doe", required = true)
+    private String userName;
+
     @Schema(description = "Le contenu du commentaire", example = "Cet article est très informatif, merci pour le partage !", required = true)
     private String content;
 

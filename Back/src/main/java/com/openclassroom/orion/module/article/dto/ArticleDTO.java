@@ -21,6 +21,9 @@ public class ArticleDTO {
     @Schema(description = "L'ID du thème auquel l'article est associé", example = "3", required = true)
     private Long themeId;
 
+    @Schema(description = "Le nom du thème de l'article", example = "IA", required = true)
+    private String theme;
+
     @Schema(description = "Le nom de l'utilisateur qui a posté l'article", example = "John Doe", required = true)
     private String userName;
 

@@ -1,0 +1,47 @@
+hr {
+  border: none;
+  border-top: 2px solid #000;
+  margin: 10px 0 0 0;
+}
+.article{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+.article-detail{
+  display: flex;
+  flex-direction: column;
+  width: 85%;
+  margin-top: 20px;
+}
+.article-detail-content{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 50%;
+  gap: 20px;
+}
+a{
+margin-top: 23px;
+}
+h2{
+  margin-left: 30px;
+}
+.article-detail-arrow-title{
+  position: relative;
+  display: flex;
+}
+@media (min-width: 835px) {
+  app-comment{
+    display: flex;
+    justify-content: center;
+  }
+  .article-detail-arrow-title a {
+    position: absolute;
+    left: -60px;
+  }
+  h2{
+    margin-left: 0;
+  }
+}

@@ -63,6 +63,8 @@ public class ArticleService {
         articleDTO.setTitle(article.getTitle());
         articleDTO.setContent(article.getContent());
         articleDTO.setThemeId(article.getTheme().getId());
+        articleDTO.setThemeId(article.getTheme().getId());
+        articleDTO.setTheme(article.getTheme().getName());
         articleDTO.setUserName(article.getUser().getActualUsername());
         articleDTO.setCreatedAt(article.getCreatedAt());
 

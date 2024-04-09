@@ -1,0 +1,17 @@
+<section class="comment">
+  <div class="comment-title">
+    <p>Commentaires</p>
+  </div>
+  <div class="comment-username-content " *ngFor="let comment of comments">
+      <p>{{ comment.userName }}</p>
+      <p>{{ comment.content }}</p>
+  </div>
+  <div class="comment-input-img">
+    <div class="comment-input">
+      <textarea placeholder="Écrivez ici votre commentaire" [(ngModel)]="newCommentContent"></textarea>
+    </div>
+    <div class="comment-img">
+      <img ngSrc="/assets/images/send.png" alt="fleche d'envoi" (click)="addComment()" height="49" width="49">
+    </div>
+  </div>
+</section>

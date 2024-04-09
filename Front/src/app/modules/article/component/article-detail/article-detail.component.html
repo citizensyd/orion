@@ -1,0 +1,17 @@
+<app-header></app-header>
+<section class="article">
+  <div class="article-detail">
+    <div class="article-detail-arrow-title">
+      <a routerLink="/articles">
+        <img class="arrow" src="../../../../assets/images/arrow.png" alt="flèche vers la gauche">
+      </a>
+      <h2>{{ article?.title }}</h2>
+    </div>
+    <div class="article-detail-content">
+      <span>{{ article?.createdAt | date:'dd-MM-yyyy' }}</span><span>{{ article?.userName }}</span><span>{{ article?.theme }}</span>
+    </div>
+    <p>{{ article?.content }}</p>
+    <hr>
+  </div>
+</section>
+<app-comment *ngIf="article" [articleId]="article.id"></app-comment>

@@ -13,6 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CommentService {
 
@@ -42,6 +45,17 @@ public class CommentService {
         return convertToDTO(savedComment);
     }
 
+    // Méthode pour récupérer les commentaires d'un article par son ID
+    public List<CommentResponse> getCommentsByArticleId(Long articleId) {
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new ArticleNotFoundException("Article non trouvé avec l'ID: " + articleId));
+
+        List<Comment> comments = commentRepository.findAllByArticle(article);
+        return comments.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     // Modifier un commentaire caractéristique non implémenter
     public Comment updateComment(Long commentId, Comment updatedComment) {
         Comment comment = commentRepository.findById(commentId)
@@ -64,6 +78,7 @@ public class CommentService {
     private CommentResponse convertToDTO(Comment comment) {
         CommentResponse commentResponse = new CommentResponse();
         commentResponse.setId(comment.getId());
+        commentResponse.setUserName(comment.getUser().getActualUsername());
         commentResponse.setContent(comment.getContent());
         commentResponse.setArticleId(comment.getArticle().getId());
         commentResponse.setUserId(comment.getUser().getId());
