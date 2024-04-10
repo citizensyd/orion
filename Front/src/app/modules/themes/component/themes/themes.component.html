@@ -1,5 +1,9 @@
 <app-header></app-header>
 <section class="theme">
-  <app-card *ngFor="let theme of themes" [theme]="theme" (subscribeEvent)="handleUnsubscribe($event)">></app-card>
+  <app-card *ngFor="let theme of themes" [theme]="theme"
+            [subscriptions]="subscriptions"
+            (subscribeEvent)="handleUnsubscribe()">
+
+  </app-card>
 </section>
 

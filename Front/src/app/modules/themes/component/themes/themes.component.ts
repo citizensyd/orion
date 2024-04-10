@@ -20,7 +20,7 @@ import {forkJoin} from "rxjs";
 })
 export class ThemesComponent implements OnInit {
   themes: ThemeDTO[] = [];
-  subscriptions: SubscriptionDTO[] | undefined;
+  subscriptions: SubscriptionDTO[] = [];
 
   constructor(
     private themeService: ThemeService,
@@ -37,20 +37,17 @@ export class ThemesComponent implements OnInit {
       subscriptions: this.themeService.getSubscriptionsByUser()
     }).subscribe({
       next: ({ themes, subscriptions }) => {
-        // Assurez-vous que subscriptions n'est pas null ou undefined
-        const safeSubscriptions = subscriptions || [];
-        this.themes = themes.filter(theme => !safeSubscriptions.some(sub => sub.id === theme.id));
+        this.themes = themes;
+        this.subscriptions = subscriptions || [];
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des données', error);
       }
     });
-
-
   }
 
   // Méthode pour gérer la souscription d'un thème
-  handleUnsubscribe(themeId: number): void {
-    this.themes = this.themes.filter(theme => theme.id !== themeId);
+  handleUnsubscribe(): void {
+    this.loadThemes();
   }
 }

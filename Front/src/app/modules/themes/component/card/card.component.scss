@@ -9,6 +9,10 @@ button {
   padding: 5px 20px 10px 20px;
   border-radius: 8px;
 }
+.disabled-button {
+  color: #b3b3b3;  // Grisé pour un effet désactivé
+  cursor: not-allowed;
+}
 .card-button{
   position: absolute;
   display: flex;
