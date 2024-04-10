@@ -5,6 +5,7 @@ import {ButtonComponent} from "../../../../component/button/classique/button.com
 import {SubscriptionService} from "../../services/subscription-service";
 import {ArticleDTO} from "../../interfaces/ArticleDTO.interface";
 import {CardComponent} from "../card/card.component";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-article',
@@ -16,7 +17,8 @@ import {CardComponent} from "../card/card.component";
     CardComponent,
     NgForOf,
     NgIf,
-    NgClass
+    NgClass,
+    RouterLink
   ],
   templateUrl: './articles.component.html',
   styleUrl: './articles.component.scss'
