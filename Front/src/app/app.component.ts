@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Router, RouterLink, RouterOutlet} from '@angular/router';
-import {Observable} from 'rxjs';
+import {NavigationEnd, Router, RouterLink, RouterOutlet} from '@angular/router';
+import {filter, Observable} from 'rxjs';
 import { AuthService } from './modules/user/services/user-services';
 import {AsyncPipe, NgIf} from "@angular/common";
 import {ButtonComponent} from "./component/button/classique/button.component";
@@ -19,12 +19,18 @@ export class AppComponent implements OnInit {
 
   @Input() routerLink: string | any[] | undefined;
 
+  showHeader: boolean = false;
   clickedLogin: boolean = false;
   clickedRegister: boolean = false;
   isLogged$: Observable<boolean>;
 
   constructor(private router: Router, private authService: AuthService) {
     this.isLogged$ = this.authService.$isLogged();
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.showHeader = event.urlAfterRedirects !== '/';
+    });
   }
 
   ngOnInit() {

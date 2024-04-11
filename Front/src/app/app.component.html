@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header *ngIf="showHeader"></app-header>
 <div class="app">
   <div *ngIf="clickedLogin || clickedRegister || (isLogged$ | async); else notLogged">
       <router-outlet></router-outlet>
