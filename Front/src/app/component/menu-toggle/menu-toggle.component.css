@@ -50,7 +50,7 @@ span {
   font-size: 25px;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 835px) {
   .menu {
     display: none;
   }

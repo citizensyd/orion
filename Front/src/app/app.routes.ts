@@ -11,14 +11,19 @@ export const routes: Routes = [
     loadChildren: () => import('./modules/user/user.module').then(m => m.UserModule)
  },
   {
-    path: 'articles',
+    path: 'profil',
     canActivate: [authGuard],
-    loadChildren: () => import('./modules/article/article.module').then(m => m.ArticleModule)
+    loadChildren: () => import('./modules/profil/profil.module').then(m => m.ProfilModule)
   },
   {
     path: 'themes',
     canActivate: [authGuard],
     loadChildren: () => import('./modules/themes/theme.module').then(m => m.ThemeModule)
+  },
+  {
+    path: 'articles',
+    canActivate: [authGuard],
+    loadChildren: () => import('./modules/article/article.module').then(m => m.ArticleModule)
   },
   { path: '404', component: NotFoundComponent },
   { path: '**', redirectTo: '404' }

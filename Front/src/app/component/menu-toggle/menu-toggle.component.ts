@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import { NgClass } from "@angular/common";
 import { MenuStateService } from "./menu-state-service";
 import { Subscription } from 'rxjs';
@@ -8,7 +8,8 @@ import { Subscription } from 'rxjs';
   selector: 'app-menu-toggle',
   standalone: true,
   imports: [
-    NgClass
+    NgClass,
+    RouterLink
   ],
   templateUrl: './menu-toggle.component.html',
   styleUrls: ['./menu-toggle.component.css']

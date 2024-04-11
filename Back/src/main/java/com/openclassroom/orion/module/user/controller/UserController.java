@@ -34,7 +34,7 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
     }
 
-    @PutMapping("/{userId}")
+    @PutMapping()
     @Operation(summary = "Mettre à jour le profil de l'utilisateur connecté",
             description = "Mise à jour des informations d'un utilisateur par son ID.",
             responses = {

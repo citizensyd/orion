@@ -6,11 +6,12 @@ import {AsyncPipe, NgIf} from "@angular/common";
 import {ButtonComponent} from "./component/button/classique/button.component";
 import {LogoComponent} from "./component/logo/logo.component";
 import {LoginComponent} from "./modules/user/component/login/login.component";
+import {HeaderComponent} from "./component/header/header.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, AsyncPipe, ButtonComponent, NgIf, LogoComponent, RouterLink],
+  imports: [RouterOutlet, AsyncPipe, ButtonComponent, NgIf, LogoComponent, RouterLink, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

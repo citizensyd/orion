@@ -26,6 +26,10 @@ export class ThemeService {
   subscribeToTheme(subscriptionRequest: SubscriptionRequest): Observable<object> {
     return this.http.post(`${this.apiUrl}`, subscriptionRequest);
   }
+
+  unSubscribeToTheme(subscriptionRequest: SubscriptionRequest): Observable<object> {
+    return this.http.delete(`${this.apiUrl}`, { body: subscriptionRequest });
+  }
   getUserIdFromToken(): number | null {
     const token = localStorage.getItem('access_token');
     if (!token) return null;

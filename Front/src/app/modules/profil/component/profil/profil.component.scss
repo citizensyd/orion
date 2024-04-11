@@ -1,0 +1,76 @@
+@import 'mixins';
+button{
+  @include button-velvet;
+}
+.profil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 87vh;
+}
+.profil-abonnement{
+  h2{
+    display: none;
+  }
+}
+p{
+  color: #A40F0F;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+}
+.profil-user{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 43vh;
+  form{
+    display: flex;
+    height: 43vh;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .form-submit-save{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+.form-input{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 14vh;
+}
+hr{
+  margin: 0;
+  border-width: 2px;
+  width: 90%;
+}
+input {
+  height: 5vh;
+  width: 250px;
+  border-radius: 8px;
+  border: solid 2px #7763c5;
+  padding-left: 5px;
+}
+@media (min-width: 835px) {
+  input {
+    width: 281px;
+  }
+  hr{
+    border-width: 2px;
+    width: 85%;
+  }
+
+  .profil-abonnement{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    h2{
+      display: block;
+    }
+  }
+}

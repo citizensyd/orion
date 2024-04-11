@@ -81,10 +81,6 @@ public class UserService {
         user.setEmail(updateRequest.getEmail() != null ? updateRequest.getEmail() : user.getEmail());
         user.setUsername(updateRequest.getUsername() != null ? updateRequest.getUsername() : user.getUsername());
 
-        if (updateRequest.getPassword() != null && !updateRequest.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
-        }
-
         User updatedUser = userRepository.save(user);
 
         return convertToUserDTO(updatedUser);

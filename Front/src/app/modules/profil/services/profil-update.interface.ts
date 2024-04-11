@@ -1,0 +1,21 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { UpdateRequest } from '../interfaces/update-request.interface';
+import { UpdateResponse } from "../interfaces/update-response.interface";
+import {environment} from "../../../../environment/environment";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProfilService {
+
+  constructor(private http: HttpClient) {}
+
+  // URL de base de l'API
+  private apiUrl = `${environment.userUrl}`;
+
+  updateUserProfile(data: UpdateRequest): Observable<UpdateResponse> {
+    return this.http.put<UpdateResponse>(`${this.apiUrl}`, data);
+  }
+}

@@ -1,0 +1,12 @@
+<div class="card">
+  <h3>{{ theme.name }}</h3>
+  <p>{{ theme.description | truncate:119 }}</p>
+  <div class="card-button">
+    <button
+      [disabled]="isUnsubscribed(theme.id)"
+      [ngClass]="{'disabled-button': isUnsubscribed(theme.id)}"
+      (click)="unSubscribe(theme.id)">
+      Se désabonner
+    </button>
+  </div>
+</div>

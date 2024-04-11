@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {NgForOf} from "@angular/common";
 import {forkJoin} from "rxjs";
 import {HeaderComponent} from "../../../../component/header/header.component";
-import {ThemeDTO} from "../../interfaces/theme.interface";
 import {SubscriptionDTO} from "../../../article/interfaces/subscription.interface";
-import {ThemeService} from "../../services/theme-service";
 import {CardComponent} from "../card/card.component";
+import {ThemeDTO} from "../../../themes/interfaces/theme.interface";
+import {ThemeService} from "../../../themes/services/theme-service";
 
 @Component({
   selector: 'app-themes',
