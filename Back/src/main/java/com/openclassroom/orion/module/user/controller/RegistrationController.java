@@ -1,6 +1,7 @@
 package com.openclassroom.orion.module.user.controller;
 
 import com.openclassroom.orion.module.user.DTO.RegisterRequest;
+import com.openclassroom.orion.module.user.DTO.RegisterResponse;
 import com.openclassroom.orion.module.user.DTO.UserDTO;
 import com.openclassroom.orion.module.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,13 +31,24 @@ public class RegistrationController {
                     @ApiResponse(responseCode = "201", description = "Utilisateur créé avec succès", content = @Content()),
                     @ApiResponse(responseCode = "400", description = "Données de requête invalides ou problème lors de l'inscription", content = @Content()),
             })
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<RegisterResponse> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
         try {
             UserDTO newUser = userService.registerNewUser(registerRequest);
 
-            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+            RegisterResponse response = new RegisterResponse();
+            response.setUserId(newUser.getId());
+            response.setUsername(newUser.getUsername());
+            response.setMessage("Utilisateur créé avec succès");
+
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (IllegalStateException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            UserDTO newUser = userService.registerNewUser(registerRequest);
+
+            RegisterResponse errorResponse = new RegisterResponse();
+            errorResponse.setUserId(newUser.getId());
+            errorResponse.setUsername(newUser.getUsername());
+            errorResponse.setMessage("Erreur lors de la création de l'utilisateur");
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
     }
 

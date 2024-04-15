@@ -34,13 +34,10 @@ export class SubscriptionService {
       this.getUserSubscriptions()
     ]).pipe(
       map(([articles, subscriptions]) => {
-        console.log(articles)
         if (!subscriptions || subscriptions.length === 0) {
           return [];
         }
-        console.log(subscriptions)
         const subscribedThemeIds = subscriptions.map(sub => sub.id);
-        console.log(subscribedThemeIds)
         return articles.filter(article => subscribedThemeIds.includes(article.themeId));
       })
     );

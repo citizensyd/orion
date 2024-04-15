@@ -1,32 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {BehaviorSubject, catchError, Observable, tap, throwError} from 'rxjs';
+import {BehaviorSubject, catchError, Observable, of, tap, throwError} from 'rxjs';
 import { LoginRequest} from '../interfaces/login-request.interface';
 import { AuthResponse } from '../interfaces/auth-response.interface';
 import { environment } from '../../../../environment/environment';
+import { jwtDecode } from "jwt-decode";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private authUrl = environment.authUrl;
-  public isLogged: boolean = false;
-  private isLoggedSubject = new BehaviorSubject<boolean>(this.isLogged);
+  private isLoggedSubject = new BehaviorSubject<boolean>(this.checkTokenValidity());
 
   constructor(private http: HttpClient) {
-    this.isLogged = !!this.getJwtToken();
-    this.isLoggedSubject.next(this.isLogged);
+
   }
 
   login(loginRequest: LoginRequest): Observable<AuthResponse> {
-    console.log('Attempting login', loginRequest);
     return this.http.post<AuthResponse>(`${this.authUrl}/login`, loginRequest).pipe(
       tap((res: AuthResponse) => {
-        console.log('Response received', res);
         if (res && res.token) {
           try {
             localStorage.setItem('access_token', res.token);
-            console.log('Token stored in local storage');
           } catch (error) {
             console.error('Error saving to localStorage', error);
           }
@@ -39,6 +35,21 @@ export class AuthService {
       })
     );
   }
+  private checkTokenValidity(): boolean {
+    const token = this.getJwtToken();
+    if (!token) return false;
+
+    try {
+      const decoded: any = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+      const offsetSeconds = 300;
+      return decoded.exp > currentTime + offsetSeconds;
+    } catch (error) {
+      console.error('Error decoding the token', error);
+      return false;
+    }
+  }
+
   // Méthode pour récupérer le jeton stocké
   private getJwtToken() {
     return localStorage.getItem('access_token');
@@ -52,8 +63,15 @@ export class AuthService {
   // Méthode pour déconnecter l'utilisateur
   logout() {
     localStorage.removeItem('access_token');
-    this.isLogged = false;
-    this.isLoggedSubject.next(this.isLogged);
+    this.isLoggedSubject.next(false);
   }
-
+// Méthode pour rafraîchir la validité du token et retourner un Observable
+  refreshTokenValidity(): Observable<boolean> {
+    const isTokenValid = this.checkTokenValidity();
+    this.isLoggedSubject.next(isTokenValid);
+    if (!isTokenValid) {
+      localStorage.removeItem('access_token');
+    }
+    return of(isTokenValid);
+  }
 }

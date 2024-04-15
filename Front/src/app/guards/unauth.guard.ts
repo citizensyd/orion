@@ -10,6 +10,7 @@ export const unauthGuard: CanActivateFn = () => {
     take(1),
     map(isLogged => {
       if (isLogged) {
+        console.log('utilisteur conencté');
         // Si l'utilisateur est déjà connecté, redirige vers la page 'article' et empêche l'accès à la route actuelle
         router.navigate(['articles']).then(success => {
           if (!success) {

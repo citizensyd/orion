@@ -22,7 +22,6 @@ export class CardComponent {
   @Output() subscribeEvent = new EventEmitter<number>();
   constructor(private themeService: ThemeService) {}
   unSubscribe(themeId: number): void {
-    console.log(themeId)
     if (themeId) {
       const userId = this.themeService.getUserIdFromToken();
       if (userId === null) {

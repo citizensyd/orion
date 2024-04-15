@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,11 +64,12 @@ public class JWTservice {
             CustomUserDetails userDetails
     ) {
         extraClaims.put("userId", userDetails.getId());
+        Instant now = Instant.now();
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // Fixe la durée à 24 heures
+                .setExpiration(Date.from(now.plus(1, ChronoUnit.DAYS))) // Fixe la durée à 24 heures
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -77,7 +80,7 @@ public class JWTservice {
     }
 
     private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        return extractExpiration(token).before(Date.from(Instant.now()));
     }
 
     private Date extractExpiration(String token) {

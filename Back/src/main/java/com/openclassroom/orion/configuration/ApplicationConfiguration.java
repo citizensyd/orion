@@ -17,12 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class ApplicationConfiguration {
 
-
-
-
-
-
-
     /**
      * Provides an instance of AuthenticationProvider.
      *

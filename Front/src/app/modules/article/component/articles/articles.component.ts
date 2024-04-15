@@ -34,7 +34,6 @@ export class ArticlesComponent implements OnInit {
   ngOnInit() {
     this.subscriptionService.getUserSubscribedArticles().subscribe({
       next: (articles: ArticleDTO[]) => {
-        console.log(articles)
         if (articles.length === 0) {
           this.noArticlesMessage = 'Aucun article disponible pour les thèmes auxquels vous êtes abonné.';
         } else {

@@ -22,6 +22,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Le contrôleur AuthController gère les requêtes d'authentification pour l'application.
+ * Il fournit des opérations pour se connecter et obtenir un jeton JWT pour l'authentification des utilisateurs.
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -29,12 +33,24 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JWTservice jswService;
 
+    /**
+     * Construit un AuthController avec les objets nécessaires pour l'authentification.
+     *
+     * @param authenticationManager le gestionnaire d'authentification pour authentifier les requêtes de connexion.
+     * @param jswService le service pour générer des jetons JWT après une authentification réussie.
+     */
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, JWTservice jswService) {
         this.authenticationManager = authenticationManager;
         this.jswService = jswService;
     }
 
+    /**
+     * Authentifie l'utilisateur à l'aide des identifiants fournis et retourne un jeton JWT en cas de succès.
+     *
+     * @param loginRequest les données de connexion de l'utilisateur contenant l'email et le mot de passe.
+     * @return une réponse contenant le jeton JWT ou un message d'erreur en cas d'échec.
+     */
     @PostMapping("/login")
     @Operation(summary = "Connexion d'un utilisateur",
             description = "Cette opération permet à l'utilisateur de se connecter en validant ses identifiants et en retournant un jeton JWT.",
@@ -42,7 +58,7 @@ public class AuthController {
                     @ApiResponse(responseCode = "200", description = "Connexion réussie, jeton JWT retourné", content = @Content()),
                     @ApiResponse(responseCode = "401", description = "Erreur d'authentification", content = @Content()),
                     @ApiResponse(responseCode = "400", description = "Données de requête invalides", content = @Content())})
-    public ResponseEntity<?> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthResponse> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
@@ -56,7 +72,7 @@ public class AuthController {
         } catch (AuthenticationException e) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body("Erreur d'authentification : " + e.getMessage());
+                    .body(new AuthResponse("Erreur d'authentification : " + e.getMessage()));
         }
     }
 }
