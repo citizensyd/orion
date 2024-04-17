@@ -23,15 +23,19 @@ import {RouterLink} from "@angular/router";
 export class HeaderComponent {
   isConnected$: Observable<boolean>;
   menuOpen = false;
-  menuSubscription: Subscription = new Subscription();
+  menuSubscription: Subscription;
   constructor(private authService: AuthService, private menuStateService: MenuStateService) {
     this.isConnected$ = this.authService.$isLogged();
+    this.menuSubscription = new Subscription();
   }
 
   ngOnInit() {
     this.menuSubscription = this.menuStateService.menuOpen$.subscribe((menuOpen: boolean) => {
       this.menuOpen = menuOpen;
     });
+  }
+  ngOnDestroy() {
+    this.menuSubscription.unsubscribe();
   }
 
 }

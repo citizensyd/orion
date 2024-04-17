@@ -60,11 +60,11 @@ app-card {
   }
 
   app-card {
-    width: calc(33.333% - 5px); /* Adjust the width to account for margin */
+    width: calc(50% - 5px);
     margin-right: 5px;
   }
 
   app-card:nth-child(3n) {
-    margin-right: 0; /* Remove margin for every third element */
+    margin-right: 0;
   }
 }

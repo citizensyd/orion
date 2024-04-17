@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import { ArticleService } from '../../services/article-detail.service';
 import { ArticleDTO } from '../../interfaces/ArticleDTO.interface';
@@ -6,6 +6,7 @@ import {HeaderComponent} from "../../../../component/header/header.component";
 import {DatePipe, NgIf} from "@angular/common";
 import {TruncatePipe} from "../../../../pipes/truncate.pipe";
 import {CommentComponent} from "../comment/comment.component";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-article-detail',
@@ -21,8 +22,9 @@ import {CommentComponent} from "../comment/comment.component";
   ],
   styleUrls: ['./article-detail.component.css']
 })
-export class ArticleDetailComponent implements OnInit {
+export class ArticleDetailComponent implements OnInit, OnDestroy {
   article: ArticleDTO | null = null;
+  private paramMapSubscription: Subscription | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,7 +32,7 @@ export class ArticleDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+    this.paramMapSubscription = this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
         this.loadArticle(+id);
@@ -42,7 +44,7 @@ export class ArticleDetailComponent implements OnInit {
 
   private loadArticle(articleId: number): void {
     this.articleService.getArticleById(articleId).subscribe({
-      next: (article: any) => {
+      next: (article: ArticleDTO) => {
         this.article = article;
       },
       error: (error: any) => {
@@ -50,5 +52,10 @@ export class ArticleDetailComponent implements OnInit {
         this.article = null;
       }
     });
+  }
+  ngOnDestroy(): void {
+    if (this.paramMapSubscription) {
+      this.paramMapSubscription.unsubscribe();
+    }
   }
 }

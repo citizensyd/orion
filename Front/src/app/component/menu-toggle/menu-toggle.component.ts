@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import { NgClass } from "@angular/common";
 import { MenuStateService } from "./menu-state-service";
@@ -14,16 +14,18 @@ import { Subscription } from 'rxjs';
   templateUrl: './menu-toggle.component.html',
   styleUrls: ['./menu-toggle.component.css']
 })
-export class MenuToggleComponent implements OnInit {
+export class MenuToggleComponent implements OnInit, OnDestroy {
   menuOpen = false;
-  menuSubscription: Subscription = new Subscription();
+  menuSubscription: Subscription;
 
-  constructor(public router: Router, private menuStateService: MenuStateService) {}
+  constructor(private router: Router, private menuStateService: MenuStateService) {
+    this.menuSubscription = new Subscription()
+  }
 
   ngOnInit() {
-    this.menuSubscription = this.menuStateService.menuOpen$.subscribe((menuOpen: boolean) => {
+    this.menuSubscription.add(this.menuStateService.menuOpen$.subscribe((menuOpen: boolean) => {
       this.menuOpen = menuOpen;
-    });
+    }));
   }
 
   ngOnDestroy() {

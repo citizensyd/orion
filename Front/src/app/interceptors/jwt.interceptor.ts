@@ -3,14 +3,13 @@ import { Injectable } from "@angular/core";
 
 @Injectable({ providedIn: 'root' })
 export class JwtInterceptor implements HttpInterceptor {
-  constructor() {}
 
   public intercept(request: HttpRequest<any>, next: HttpHandler) {
     const token = localStorage.getItem('access_token');
     if (token) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
       });
     }
