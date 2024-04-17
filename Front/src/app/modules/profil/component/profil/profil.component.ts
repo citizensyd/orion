@@ -6,7 +6,7 @@ import { UpdateRequest } from "../../interfaces/update-request.interface";
 import { ProfilService } from "../../services/profil-update.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../../../user/services/user-services";
-import {ThemesComponent} from "../themes/themes.component";
+import {ThemesProfilComponent} from "../themes/themes-profil.component";
 import {UpdateResponse} from "../../interfaces/update-response.interface";
 import {Subscription} from "rxjs";
 
@@ -17,7 +17,7 @@ import {Subscription} from "rxjs";
     HeaderComponent,
     ReactiveFormsModule,
     FormsModule,
-    ThemesComponent
+    ThemesProfilComponent
   ],
   templateUrl: './profil.component.html',
   styleUrls: ['./profil.component.scss']

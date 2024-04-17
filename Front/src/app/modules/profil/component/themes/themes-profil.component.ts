@@ -8,17 +8,17 @@ import {ThemeDTO} from "../../../themes/interfaces/theme.interface";
 import {ThemeService} from "../../../themes/services/theme-service";
 
 @Component({
-  selector: 'app-themes',
+  selector: 'app-themes-profil',
   standalone: true,
   imports: [
     HeaderComponent,
     CardComponent,
     NgForOf
   ],
-  templateUrl: './themes.component.html',
-  styleUrl: './themes.component.css'
+  templateUrl: './themes-profil.component.html',
+  styleUrl: './themes-profil.component.css'
 })
-export class ThemesComponent implements OnInit, OnDestroy {
+export class ThemesProfilComponent implements OnInit, OnDestroy {
   themes: ThemeDTO[] = [];
   subscriptions: SubscriptionDTO[] = [];
   private allSubscriptions = new Subscription();

@@ -47,7 +47,6 @@ export class ThemesComponent implements OnInit, OnDestroy  {
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des données', error);
-        // Potentially handle user notification here
       }
     }));
   }
