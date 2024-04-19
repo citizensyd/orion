@@ -99,11 +99,10 @@ Once your PR is reviewed and approved, it will be merged into the main branch.
 </details>
 ---
 ## Documentation Back end
-You can test the back end at this address :
+After launching the back end you can test it at this address:
 
 http://localhost:3001/swagger-ui/index.html
 
----
 ---
 
 ## 📄 License
