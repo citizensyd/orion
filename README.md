@@ -60,6 +60,12 @@ nmp install
 ng serve
 ```
 ---
+## 💼 Documentation Back end
+After launching the back end you can test it at this address:
+
+http://localhost:3001/swagger-ui/index.html
+
+---
 
 ## 🤝 Contributing
 
@@ -97,12 +103,6 @@ Contributions are welcome! Here are several ways you can contribute:
 Once your PR is reviewed and approved, it will be merged into the main branch.
 
 </details>
----
-## Documentation Back end
-After launching the back end you can test it at this address:
-
-http://localhost:3001/swagger-ui/index.html
-
 ---
 
 ## 📄 License
