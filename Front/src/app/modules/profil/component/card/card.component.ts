@@ -20,15 +20,15 @@ import {Subscription} from "rxjs";
 export class CardComponent implements OnDestroy {
   @Input() theme!: ThemeDTO;
   @Input() subscriptions!: SubscriptionDTO[];
-  @Output() subscribeEvent = new EventEmitter<number>();
-  private subscriptionsTracker = new Subscription();
+  @Output() subscribeEvent: EventEmitter<number> = new EventEmitter<number>();
+  private subscriptionsTracker: Subscription = new Subscription();
 
   constructor(private themeService: ThemeService) {
   }
 
   unSubscribe(themeId: number): void {
     if (themeId) {
-      const userId = this.themeService.getUserIdFromToken();
+      const userId: number| null = this.themeService.getUserIdFromToken();
       if (userId === null) {
         console.error('L\'utilisateur n\'est pas connecté ou le token n\'est pas valide.');
         return;
@@ -39,7 +39,7 @@ export class CardComponent implements OnDestroy {
       };
 
       this.subscriptionsTracker.add(this.themeService.unSubscribeToTheme(subscriptionRequest).subscribe({
-        next: () => {
+        next: (): void => {
           this.subscribeEvent.emit();
         },
         error: (error: any) => console.error(error)
@@ -47,7 +47,7 @@ export class CardComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptionsTracker.unsubscribe();
   }
 

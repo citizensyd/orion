@@ -1,4 +1,10 @@
 @import 'mixins';
+.alert-danger {
+  color: #dc3545; /* Couleur de texte pour erreur */
+  background-color: #f8d7da; /* Couleur d'arrière-plan pour erreur */
+  border-color: #f5c6cb; /* Couleur de bordure pour erreur */
+  /* autres styles... */
+}
 .login{
   display: flex;
   position: relative;

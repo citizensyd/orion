@@ -21,7 +21,7 @@ import {ThemeService} from "../../../themes/services/theme-service";
 export class ThemesProfilComponent implements OnInit, OnDestroy {
   themes: ThemeDTO[] = [];
   subscriptions: SubscriptionDTO[] = [];
-  private allSubscriptions = new Subscription();
+  private allSubscriptions: Subscription = new Subscription();
 
   constructor(
     private themeService: ThemeService,
@@ -52,7 +52,7 @@ export class ThemesProfilComponent implements OnInit, OnDestroy {
   handleUnsubscribe(): void {
     this.loadThemes();
   }
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.allSubscriptions.unsubscribe();
   }
 }

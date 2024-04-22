@@ -10,17 +10,17 @@ import { environment } from '../../../../environment/environment';
   providedIn: 'root'
 })
 export class CommentService {
-  private commentUrl = `${environment.commentUrl}`;
+  private commentUrl: string = `${environment.commentUrl}`;
 
   constructor(private http: HttpClient) { }
 
   getCommentsByArticleId(articleId: number): Observable<CommentResponse[]> {
-    const url = `${this.commentUrl}/${articleId}/comments`;
+    const url: string = `${this.commentUrl}/${articleId}/comments`;
     return this.http.get<CommentResponse[]>(url);
   }
 
   addCommentToArticle(articleId: number, commentRequest: CommentRequest): Observable<CommentResponse> {
-    const url = `${this.commentUrl}/${articleId}/comments`;
+    const url: string = `${this.commentUrl}/${articleId}/comments`;
     return this.http.post<CommentResponse>(url, commentRequest);
   }
 }

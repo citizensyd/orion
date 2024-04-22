@@ -1,10 +1,8 @@
 import {Component, OnDestroy} from '@angular/core';
-import {RegisterRequest} from "../../interfaces/register-request.interface";
 import {LogoComponent} from "../../../../component/logo/logo.component";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ButtonComponent} from "../../../../component/button/classique/button.component";
 import {RegisterService} from "../../services/register-service";
-import {RegisterResponse} from "../../interfaces/register-response.interface";
 import {HeaderComponent} from "../../../../component/header/header.component";
 import {Router, RouterLink} from "@angular/router";
 import {NgIf} from "@angular/common";
@@ -35,23 +33,22 @@ export class RegisterComponent implements OnDestroy {
     });
   }
 
-  onRegisterSubmit() {
+  onRegisterSubmit(): void {
     if (this.registerForm.valid) {
       this.sub.add(this.registerService.register(this.registerForm.value).subscribe({
-        next: (response) => {
+        next: (response): void => {
           this.successMessage = "Enregistrement réussi"
-          setTimeout(() => {
+          setTimeout((): void => {
             this.router.navigate(['/login']);
           }, 3000);
         },
-        error: (error) => {
+        error: (error): void => {
           this.errorMessage = error.error || "Une erreur s'est produite durant l'enregistrement.";
-          console.error('Registration error:', error.error);
         }
       }));
     }
   }
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
 }

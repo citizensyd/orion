@@ -3,7 +3,6 @@ import {jwtDecode} from "jwt-decode";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ArticleService} from "../../services/article-new.service";
 import {ThemeService} from "../../../themes/services/theme-service";
-import {AuthService} from "../../../user/services/user-services";
 import {ArticleRequest} from "../../interfaces/article-request.interface";
 import {ThemeDTO} from "../../../themes/interfaces/theme.interface";
 import {NgForOf, NgOptimizedImage} from "@angular/common";
@@ -11,6 +10,7 @@ import {HeaderComponent} from "../../../../component/header/header.component";
 import {Router, RouterLink} from "@angular/router";
 import {Subscription} from "rxjs";
 import {tokenDTO} from "../../interfaces/TokenDTO.interface";
+import {ArticleResponse} from "../../interfaces/article-response.interface";
 
 @Component({
   selector: 'app-article-new',
@@ -48,23 +48,23 @@ export class ArticleNewComponent implements OnDestroy{
 
   loadThemes(): void {
     this.themeSubscription = this.themeService.getAllThemes().subscribe({
-      next: (themes) => this.themes = themes,
+      next: (themes: ThemeDTO[]) => this.themes = themes,
       error: (error) => console.error('Erreur lors du chargement des thèmes', error)
     });
   }
 
   submit(): void {
     if (this.articleForm.valid) {
-      const userId = this.getUserIdFromToken();
+      const userId: number|null = this.getUserIdFromToken();
       const articleRequest: ArticleRequest = {
         ...this.articleForm.value,
         userId: userId
       };
 
       this.articleSubscription = this.articleService.addArticle(articleRequest).subscribe({
-        next: (article) => {
-            console.log('Article ajouté avec succès', article);
-            this.router.navigate(['/articles', article.id]);
+        next: (article: ArticleResponse): void => {
+          console.log('Article ajouté avec succès', article);
+          this.router.navigate(['/articles', article.id]);
         },
         error: (error) => console.error('Erreur lors de l’ajout de l’article', error)
       });
@@ -72,7 +72,7 @@ export class ArticleNewComponent implements OnDestroy{
   }
 
   getUserIdFromToken(): number | null {
-    const token = localStorage.getItem('access_token');
+    const token: string| null = localStorage.getItem('access_token');
     if (!token) return null;
 
     try {

@@ -4,22 +4,17 @@ import { AuthService } from "../modules/user/services/user-services";
 import {map, take} from "rxjs";
 
 export const unauthGuard: CanActivateFn = () => {
-  const authService = inject(AuthService);
-  const router = inject(Router);
+  const authService: AuthService = inject(AuthService);
+  const router: Router = inject(Router);
   return authService.$isLogged().pipe(
     take(1),
     map(isLogged => {
       if (isLogged) {
-        console.log('utilisteur conencté');
         // Si l'utilisateur est déjà connecté, redirige vers la page 'article' et empêche l'accès à la route actuelle
         router.navigate(['articles']).then(success => {
-          if (!success) {
-            console.log('La navigation vers article a échoué!');
-          }
         }).catch(error => {
-          console.error('Erreur lors de la navigation:', error);
+          return false;
         });
-        console.log('unauthGuard to article')
         return false;
       }
       // Permet l'accès si l'utilisateur n'est pas connecté

@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environment/environment';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../../../environment/environment';
 import {ThemeDTO} from "../interfaces/theme.interface";
 import {Observable} from "rxjs";
 import {SubscriptionRequest} from "../interfaces/subscription-request.interface";
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 import {SubscriptionDTO} from "../../article/interfaces/subscription.interface";
 
 
@@ -12,26 +12,30 @@ import {SubscriptionDTO} from "../../article/interfaces/subscription.interface";
   providedIn: 'root'
 })
 export class ThemeService {
-  private apiUrl = `${environment.backendUrl}`;
+  private apiUrl: string = `${environment.backendUrl}`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   getAllThemes(): Observable<ThemeDTO[]> {
     return this.http.get<ThemeDTO[]>(this.apiUrl);
   }
+
   getSubscriptionsByUser(): Observable<SubscriptionDTO[]> {
-    const url = `${this.apiUrl}/user`;
+    const url: string = `${this.apiUrl}/user`;
     return this.http.get<SubscriptionDTO[]>(url);
   }
+
   subscribeToTheme(subscriptionRequest: SubscriptionRequest): Observable<object> {
     return this.http.post(`${this.apiUrl}`, subscriptionRequest);
   }
 
   unSubscribeToTheme(subscriptionRequest: SubscriptionRequest): Observable<object> {
-    return this.http.delete(`${this.apiUrl}`, { body: subscriptionRequest });
+    return this.http.delete(`${this.apiUrl}`, {body: subscriptionRequest});
   }
+
   getUserIdFromToken(): number | null {
-    const token = localStorage.getItem('access_token');
+    const token: string | null = localStorage.getItem('access_token');
     if (!token) return null;
 
     try {

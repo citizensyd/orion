@@ -16,6 +16,9 @@
     </div>
     <button (click)="onLoginSubmit()">Se connecter</button>
   </form>
-
+  <!-- Message d'erreur -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
 </div>
 

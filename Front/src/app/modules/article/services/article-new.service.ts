@@ -10,7 +10,7 @@ import {environment} from "../../../../environment/environment";
   providedIn: 'root'
 })
 export class ArticleService {
-  private apiUrl = `${environment.articleUrl}`;
+  private apiUrl: string = `${environment.articleUrl}`;
 
   constructor(private http: HttpClient) { }
 

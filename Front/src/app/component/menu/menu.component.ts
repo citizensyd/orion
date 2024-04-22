@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import {AsyncPipe, NgClass} from "@angular/common";
-import {Observable} from "rxjs";
-import {AuthService} from "../../modules/user/services/user-services";
 
 @Component({
   selector: 'app-menu',

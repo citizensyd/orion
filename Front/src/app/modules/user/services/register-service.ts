@@ -9,7 +9,7 @@ import {RegisterResponse} from "../interfaces/register-response.interface";
   providedIn: 'root'
 })
 export class RegisterService {
-  private authUrl = environment.authUrl;
+  private authUrl: string = environment.authUrl;
 
 
   constructor(private http: HttpClient) {

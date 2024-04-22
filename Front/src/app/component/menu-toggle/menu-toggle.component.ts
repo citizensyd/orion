@@ -15,20 +15,20 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./menu-toggle.component.css']
 })
 export class MenuToggleComponent implements OnInit, OnDestroy {
-  menuOpen = false;
+  menuOpen: boolean = false;
   menuSubscription: Subscription;
 
   constructor(private router: Router, private menuStateService: MenuStateService) {
     this.menuSubscription = new Subscription()
   }
 
-  ngOnInit() {
-    this.menuSubscription.add(this.menuStateService.menuOpen$.subscribe((menuOpen: boolean) => {
+  ngOnInit(): void {
+    this.menuSubscription.add(this.menuStateService.menuOpen$.subscribe((menuOpen: boolean): void => {
       this.menuOpen = menuOpen;
     }));
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.menuSubscription.unsubscribe();
   }
 
@@ -40,7 +40,7 @@ export class MenuToggleComponent implements OnInit, OnDestroy {
     return this.router.url === '/themes';
   }
 
-  toggleMenu() {
+  toggleMenu(): void {
     this.menuStateService.toggleMenu();
   }
 }

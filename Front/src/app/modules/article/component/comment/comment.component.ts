@@ -36,7 +36,7 @@ export class CommentComponent implements OnInit, OnDestroy {
 
   private loadComments(articleId: number): void {
     this.commentSubscriptions.add(this.commentService.getCommentsByArticleId(articleId).subscribe({
-      next: (comments) => this.comments = comments,
+      next: (comments: CommentResponse[]) => this.comments = comments,
       error: (error) => console.error('Failed to load comments:', error)
     }));
   }
@@ -51,14 +51,14 @@ export class CommentComponent implements OnInit, OnDestroy {
       articleId: this.articleId,
     };
     this.commentSubscriptions.add(this.commentService.addCommentToArticle(this.articleId, commentRequest).subscribe({
-      next: (comment) => {
+      next: (comment: CommentResponse): void => {
         this.comments.push(comment);
         this.newCommentContent = '';
       },
       error: (error) => console.error('Failed to add comment:', error)
     }));
   }
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.commentSubscriptions.unsubscribe();
   }
 }

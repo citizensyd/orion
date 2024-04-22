@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MenuStateService {
-  private menuOpenSource = new BehaviorSubject<boolean>(false);
+  private menuOpenSource: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  menuOpen$ = this.menuOpenSource.asObservable();
+  menuOpen$: Observable<boolean> = this.menuOpenSource.asObservable();
 
-  toggleMenu() {
+  toggleMenu(): void {
     this.menuOpenSource.next(!this.menuOpenSource.getValue());
   }
 }

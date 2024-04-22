@@ -27,7 +27,7 @@ export class ProfilComponent implements OnDestroy {
     email: '',
     username: ''
   };
-  private subscriptions = new Subscription();
+  private subscriptions: Subscription = new Subscription();
 
   constructor(private profilService: ProfilService,private router: Router,private authService: AuthService,) {}
 
@@ -48,7 +48,7 @@ export class ProfilComponent implements OnDestroy {
     this.router.navigate(['/login']).then(() => {
     });
   }
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 }

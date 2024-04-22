@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, RouterLink} from '@angular/router';
-import { ArticleService } from '../../services/article-detail.service';
-import { ArticleDTO } from '../../interfaces/ArticleDTO.interface';
+import {ArticleService} from '../../services/article-detail.service';
+import {ArticleDTO} from '../../interfaces/ArticleDTO.interface';
 import {HeaderComponent} from "../../../../component/header/header.component";
 import {DatePipe, NgIf} from "@angular/common";
 import {TruncatePipe} from "../../../../pipes/truncate.pipe";
@@ -29,11 +29,12 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private articleService: ArticleService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.paramMapSubscription = this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
+      const id: string | null = params.get('id');
       if (id) {
         this.loadArticle(+id);
       } else {
@@ -53,6 +54,7 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   ngOnDestroy(): void {
     if (this.paramMapSubscription) {
       this.paramMapSubscription.unsubscribe();

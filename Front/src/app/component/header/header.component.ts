@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AsyncPipe, NgClass} from "@angular/common";
 import {AuthService} from "../../modules/user/services/user-services";
 import {Observable, Subscription} from "rxjs";
@@ -10,31 +10,31 @@ import {RouterLink} from "@angular/router";
 @Component({
   selector: 'app-header',
   standalone: true,
-    imports: [
-        NgClass,
-        AsyncPipe,
-        MenuComponent,
-        MenuToggleComponent,
-        RouterLink,
-    ],
+  imports: [
+    NgClass,
+    AsyncPipe,
+    MenuComponent,
+    MenuToggleComponent,
+    RouterLink,
+  ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy{
   isConnected$: Observable<boolean>;
-  menuOpen = false;
+  menuOpen: boolean = false;
   menuSubscription: Subscription;
   constructor(private authService: AuthService, private menuStateService: MenuStateService) {
     this.isConnected$ = this.authService.$isLogged();
     this.menuSubscription = new Subscription();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.menuSubscription = this.menuStateService.menuOpen$.subscribe((menuOpen: boolean) => {
       this.menuOpen = menuOpen;
     });
   }
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.menuSubscription.unsubscribe();
   }
 

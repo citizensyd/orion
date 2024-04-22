@@ -10,8 +10,8 @@ import { jwtDecode } from "jwt-decode";
   providedIn: 'root'
 })
 export class AuthService {
-  private authUrl = environment.authUrl;
-  private isLoggedSubject = new BehaviorSubject<boolean>(this.checkTokenValidity());
+  private authUrl: string = environment.authUrl;
+  private isLoggedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.checkTokenValidity());
 
   constructor(private http: HttpClient) {
 
@@ -21,28 +21,23 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.authUrl}/login`, loginRequest).pipe(
       tap((res: AuthResponse) => {
         if (res && res.token) {
-          try {
-            localStorage.setItem('access_token', res.token);
-          } catch (error) {
-            console.error('Error saving to localStorage', error);
-          }
+          localStorage.setItem('access_token', res.token);
           this.isLoggedSubject.next(true);
         }
       }),
-      catchError((error) => {
-        console.error('Error in login request', error);
+      catchError(() => {
         return throwError(() => new Error('Login failed'));
       })
     );
   }
   private checkTokenValidity(): boolean {
-    const token = this.getJwtToken();
+    const token: string|null = this.getJwtToken();
     if (!token) return false;
 
     try {
       const decoded: any = jwtDecode(token);
-      const currentTime = Date.now() / 1000;
-      const offsetSeconds = 300;
+      const currentTime: number = Date.now() / 1000;
+      const offsetSeconds: number = 300;
       return decoded.exp > currentTime + offsetSeconds;
     } catch (error) {
       console.error('Error decoding the token', error);
@@ -51,7 +46,7 @@ export class AuthService {
   }
 
   // Méthode pour récupérer le jeton stocké
-  private getJwtToken() {
+  private getJwtToken(): string|null {
     return localStorage.getItem('access_token');
   }
 
@@ -61,7 +56,7 @@ export class AuthService {
   }
 
   // Méthode pour déconnecter l'utilisateur
-  logout() {
+  logout(): void {
     localStorage.removeItem('access_token');
     this.isLoggedSubject.next(false);
   }

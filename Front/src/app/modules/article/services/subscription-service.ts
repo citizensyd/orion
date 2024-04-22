@@ -10,8 +10,8 @@ import { environment } from '../../../../environment/environment';
   providedIn: 'root'
 })
 export class SubscriptionService {
-  private apiUrl = environment.backendUrl;
-  private articleUrl = environment.articleUrl;
+  private apiUrl: string = environment.backendUrl;
+  private articleUrl: string = environment.articleUrl;
 
 
 

@@ -44,7 +44,7 @@ export class ArticlesComponent implements OnInit, OnDestroy {
           this.noArticlesMessage = '';
         }
       },
-      error: (error: any) => {
+      error: (error) => {
         console.error('Erreur lors de la récupération des articles filtrés', error);
         this.noArticlesMessage = 'Erreur lors du chargement des articles.';
       }
@@ -55,11 +55,11 @@ export class ArticlesComponent implements OnInit, OnDestroy {
       .sort((a, b) => ascending ? a.dateParsed - b.dateParsed : b.dateParsed - a.dateParsed);
   }
 
-  toggleSortOrder() {
+  toggleSortOrder(): void {
     this.isAscending = !this.isAscending;
     this.filteredArticles = this.sortArticles(this.filteredArticles, this.isAscending);
   }
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 }
