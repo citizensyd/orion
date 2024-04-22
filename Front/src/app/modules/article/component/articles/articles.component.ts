@@ -34,9 +34,9 @@ export class ArticlesComponent implements OnInit, OnDestroy {
     this.subscriptions = new Subscription();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.subscriptions.add(this.subscriptionService.getUserSubscribedArticles().subscribe({
-      next: (articles: ArticleDTO[]) => {
+      next: (articles: ArticleDTO[]): void => {
         if (articles.length === 0) {
           this.noArticlesMessage = 'Aucun article disponible pour les thèmes auxquels vous êtes abonné.';
         } else {
@@ -44,14 +44,14 @@ export class ArticlesComponent implements OnInit, OnDestroy {
           this.noArticlesMessage = '';
         }
       },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des articles filtrés', error);
+      error: (): void => {
         this.noArticlesMessage = 'Erreur lors du chargement des articles.';
       }
     }));
   }
+
   sortArticles(articles: ArticleDTO[], ascending: boolean): ArticleDTO[] {
-    return articles.map(article => ({ ...article, dateParsed: new Date(article.createdAt).getTime() }))
+    return articles.map(article => ({...article, dateParsed: new Date(article.createdAt).getTime()}))
       .sort((a, b) => ascending ? a.dateParsed - b.dateParsed : b.dateParsed - a.dateParsed);
   }
 
@@ -59,6 +59,7 @@ export class ArticlesComponent implements OnInit, OnDestroy {
     this.isAscending = !this.isAscending;
     this.filteredArticles = this.sortArticles(this.filteredArticles, this.isAscending);
   }
+
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }

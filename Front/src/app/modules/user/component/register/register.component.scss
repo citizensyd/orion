@@ -57,15 +57,13 @@ form{
   }
 }
 .alert-success {
-  color: #28a745; /* Couleur de texte pour succès */
-  background-color: #dff0d8; /* Couleur d'arrière-plan pour succès */
-  border-color: #d4edda; /* Couleur de bordure pour succès */
-  /* autres styles... */
+  color: #28a745;
+  background-color: #dff0d8;
+  border-color: #d4edda;
 }
 
 .alert-danger {
-  color: #dc3545; /* Couleur de texte pour erreur */
-  background-color: #f8d7da; /* Couleur d'arrière-plan pour erreur */
-  border-color: #f5c6cb; /* Couleur de bordure pour erreur */
-  /* autres styles... */
+  color: #dc3545;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
 }

@@ -5,6 +5,7 @@ import {CommentRequest} from "../../interfaces/comment-request.interface";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {Subscription} from "rxjs";
+import {ErrorHandlingService} from "../../../../services/error-service";
 
 @Component({
   selector: 'app-comment',
@@ -24,7 +25,7 @@ export class CommentComponent implements OnInit, OnDestroy {
   newCommentContent: string = '';
   private commentSubscriptions: Subscription;
 
-  constructor(private commentService: CommentService) {
+  constructor(private commentService: CommentService, private errorHandlingService: ErrorHandlingService) {
     this.commentSubscriptions = new Subscription();
   }
 
@@ -37,13 +38,12 @@ export class CommentComponent implements OnInit, OnDestroy {
   private loadComments(articleId: number): void {
     this.commentSubscriptions.add(this.commentService.getCommentsByArticleId(articleId).subscribe({
       next: (comments: CommentResponse[]) => this.comments = comments,
-      error: (error) => console.error('Failed to load comments:', error)
+      error: () => this.errorHandlingService.handleError()
     }));
   }
 
   addComment(): void {
     if (!this.newCommentContent.trim()) {
-      console.error('Comment content is empty');
       return;
     }
     const commentRequest: CommentRequest = {
@@ -55,9 +55,10 @@ export class CommentComponent implements OnInit, OnDestroy {
         this.comments.push(comment);
         this.newCommentContent = '';
       },
-      error: (error) => console.error('Failed to add comment:', error)
+      error: () => this.errorHandlingService.handleError()
     }));
   }
+
   ngOnDestroy(): void {
     this.commentSubscriptions.unsubscribe();
   }

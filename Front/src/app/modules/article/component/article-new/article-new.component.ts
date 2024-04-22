@@ -11,6 +11,7 @@ import {Router, RouterLink} from "@angular/router";
 import {Subscription} from "rxjs";
 import {tokenDTO} from "../../interfaces/TokenDTO.interface";
 import {ArticleResponse} from "../../interfaces/article-response.interface";
+import {ErrorHandlingService} from "../../../../services/error-service";
 
 @Component({
   selector: 'app-article-new',
@@ -36,6 +37,7 @@ export class ArticleNewComponent implements OnDestroy{
     private router: Router,
     private articleService: ArticleService,
     private themeService: ThemeService,
+    private errorHandlingService: ErrorHandlingService
   ) {
     this.articleForm = this.fb.group({
       title: ['', Validators.required],
@@ -49,7 +51,7 @@ export class ArticleNewComponent implements OnDestroy{
   loadThemes(): void {
     this.themeSubscription = this.themeService.getAllThemes().subscribe({
       next: (themes: ThemeDTO[]) => this.themes = themes,
-      error: (error) => console.error('Erreur lors du chargement des thèmes', error)
+      error: () => this.errorHandlingService.handleError()
     });
   }
 
@@ -63,10 +65,9 @@ export class ArticleNewComponent implements OnDestroy{
 
       this.articleSubscription = this.articleService.addArticle(articleRequest).subscribe({
         next: (article: ArticleResponse): void => {
-          console.log('Article ajouté avec succès', article);
           this.router.navigate(['/articles', article.id]);
         },
-        error: (error) => console.error('Erreur lors de l’ajout de l’article', error)
+        error: () => this.errorHandlingService.handleError()
       });
     }
   }
@@ -79,7 +80,7 @@ export class ArticleNewComponent implements OnDestroy{
       const decodedToken: tokenDTO = jwtDecode(token);
       return decodedToken.userId;
     } catch (error) {
-      console.error('Erreur de décodage du token:', error);
+      this.errorHandlingService.handleError()
       return null;
     }
   }

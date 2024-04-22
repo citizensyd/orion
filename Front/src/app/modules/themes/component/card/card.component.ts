@@ -6,6 +6,7 @@ import {SubscriptionRequest} from "../../interfaces/subscription-request.interfa
 import {NgClass} from "@angular/common";
 import {SubscriptionDTO} from "../../../article/interfaces/subscription.interface";
 import {Subscription} from "rxjs";
+import {ErrorHandlingService} from "../../../../services/error-service";
 
 @Component({
   selector: 'app-card',
@@ -23,13 +24,12 @@ export class CardComponent implements OnDestroy {
   @Output() subscribeEvent: EventEmitter<number> = new EventEmitter<number>();
 
   private subscriptionsTracker: Subscription = new Subscription();
-  constructor(private themeService: ThemeService) {}
+  constructor(private themeService: ThemeService, private errorHandlingService: ErrorHandlingService) {}
   subscribe(themeId: number): void {
-    console.log(themeId)
     if (themeId) {
       const userId: number|null = this.themeService.getUserIdFromToken();
       if (userId === null) {
-        console.error('L\'utilisateur n\'est pas connecté ou le token n\'est pas valide.');
+        this.errorHandlingService.handleError()
         return;
       }
       const subscriptionRequest: SubscriptionRequest = {
@@ -41,7 +41,7 @@ export class CardComponent implements OnDestroy {
         next: (): void => {
           this.subscribeEvent.emit();
         },
-        error: error => console.error(error)
+        error: error => this.errorHandlingService.handleError()
       }));
     }
   }

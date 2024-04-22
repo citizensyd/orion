@@ -1,4 +1,15 @@
 @import 'mixins';
+.alert-success {
+  color: #28a745;
+  background-color: #dff0d8;
+  border-color: #d4edda;
+}
+
+.alert-danger {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
 button{
   @include button-velvet;
 }

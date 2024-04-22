@@ -12,7 +12,6 @@ export class ProfilService {
 
   constructor(private http: HttpClient) {}
 
-  // URL de base de l'API
   private apiUrl: string = `${environment.userUrl}`;
 
   updateUserProfile(data: UpdateRequest): Observable<UpdateResponse> {

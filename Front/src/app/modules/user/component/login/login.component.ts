@@ -1,4 +1,4 @@
-import {Component, ErrorHandler, OnDestroy} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {LogoComponent} from "../../../../component/logo/logo.component";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ButtonComponent} from "../../../../component/button/classique/button.component";
@@ -23,7 +23,7 @@ export class LoginComponent implements OnDestroy {
   errorMessage: string = '';
   private subscriptions: Subscription = new Subscription();
 
-  constructor(private fb: FormBuilder,private authService: AuthService, private router: Router, private errorHandler: ErrorHandler) {
+  constructor(private fb: FormBuilder,private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]

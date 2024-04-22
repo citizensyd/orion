@@ -19,6 +19,15 @@
         <p type="button" (click)="logout()">Se déconnecter</p>
       </div>
     </form>
+    <!-- Message de succès -->
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <!-- Message d'erreur -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
   </div>
   <hr>
   <div class="profil-abonnement">

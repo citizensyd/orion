@@ -6,6 +6,7 @@ import {SubscriptionDTO} from "../../../article/interfaces/subscription.interfac
 import {CardComponent} from "../card/card.component";
 import {ThemeDTO} from "../../../themes/interfaces/theme.interface";
 import {ThemeService} from "../../../themes/services/theme-service";
+import {ErrorHandlingService} from "../../../../services/error-service";
 
 @Component({
   selector: 'app-themes-profil',
@@ -24,7 +25,7 @@ export class ThemesProfilComponent implements OnInit, OnDestroy {
   private allSubscriptions: Subscription = new Subscription();
 
   constructor(
-    private themeService: ThemeService,
+    private themeService: ThemeService, private errorHandlingService: ErrorHandlingService
   ) {}
 
   ngOnInit(): void {
@@ -38,12 +39,12 @@ export class ThemesProfilComponent implements OnInit, OnDestroy {
       subscriptions: this.themeService.getSubscriptionsByUser()
     });
     this.allSubscriptions.add(request.subscribe({
-      next: ({ themes, subscriptions }) => {
+      next: ({ themes, subscriptions }): void => {
         this.themes = themes;
         this.subscriptions = subscriptions || [];
       },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des données', error);
+      error: (): void => {
+        this.errorHandlingService.handleError()
       }
     }));
   }

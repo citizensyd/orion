@@ -5,6 +5,7 @@ import { LoginRequest} from '../interfaces/login-request.interface';
 import { AuthResponse } from '../interfaces/auth-response.interface';
 import { environment } from '../../../../environment/environment';
 import { jwtDecode } from "jwt-decode";
+import {ErrorHandlingService} from "../../../services/error-service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +14,13 @@ export class AuthService {
   private authUrl: string = environment.authUrl;
   private isLoggedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.checkTokenValidity());
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private errorHandlingService: ErrorHandlingService) {
 
   }
 
   login(loginRequest: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.authUrl}/login`, loginRequest).pipe(
-      tap((res: AuthResponse) => {
+      tap((res: AuthResponse): void => {
         if (res && res.token) {
           localStorage.setItem('access_token', res.token);
           this.isLoggedSubject.next(true);
@@ -40,7 +41,7 @@ export class AuthService {
       const offsetSeconds: number = 300;
       return decoded.exp > currentTime + offsetSeconds;
     } catch (error) {
-      console.error('Error decoding the token', error);
+      this.errorHandlingService.handleError();
       return false;
     }
   }
@@ -62,7 +63,7 @@ export class AuthService {
   }
 // Méthode pour rafraîchir la validité du token et retourner un Observable
   refreshTokenValidity(): Observable<boolean> {
-    const isTokenValid = this.checkTokenValidity();
+    const isTokenValid: boolean = this.checkTokenValidity();
     this.isLoggedSubject.next(isTokenValid);
     if (!isTokenValid) {
       localStorage.removeItem('access_token');

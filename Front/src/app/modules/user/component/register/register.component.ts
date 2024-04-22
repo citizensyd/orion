@@ -36,14 +36,14 @@ export class RegisterComponent implements OnDestroy {
   onRegisterSubmit(): void {
     if (this.registerForm.valid) {
       this.sub.add(this.registerService.register(this.registerForm.value).subscribe({
-        next: (response): void => {
+        next: (): void => {
           this.successMessage = "Enregistrement réussi"
           setTimeout((): void => {
             this.router.navigate(['/login']);
-          }, 3000);
+          }, 1000);
         },
-        error: (error): void => {
-          this.errorMessage = error.error || "Une erreur s'est produite durant l'enregistrement.";
+        error: (): void => {
+          this.errorMessage = "Une erreur s'est produite durant l'enregistrement.";
         }
       }));
     }

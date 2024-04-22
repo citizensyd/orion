@@ -6,6 +6,7 @@ import {ThemeDTO} from "../../interfaces/theme.interface";
 import {SubscriptionDTO} from "../../../article/interfaces/subscription.interface";
 import {ThemeService} from "../../services/theme-service";
 import {CardComponent} from "../card/card.component";
+import {ErrorHandlingService} from "../../../../services/error-service";
 
 @Component({
   selector: 'app-themes',
@@ -25,6 +26,7 @@ export class ThemesComponent implements OnInit, OnDestroy  {
 
   constructor(
     private themeService: ThemeService,
+    private errorHandlingService: ErrorHandlingService
   ) {
     this.subscriptionsTracker = new Subscription();
   }
@@ -45,8 +47,8 @@ export class ThemesComponent implements OnInit, OnDestroy  {
         this.themes = themes;
         this.subscriptions = subscriptions || [];
       },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des données', error);
+      error: (): void => {
+        this.errorHandlingService.handleError();
       }
     }));
   }

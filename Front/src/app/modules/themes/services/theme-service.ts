@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {SubscriptionRequest} from "../interfaces/subscription-request.interface";
 import {jwtDecode} from 'jwt-decode';
 import {SubscriptionDTO} from "../../article/interfaces/subscription.interface";
+import {ErrorHandlingService} from "../../../services/error-service";
 
 
 @Injectable({
@@ -14,7 +15,8 @@ import {SubscriptionDTO} from "../../article/interfaces/subscription.interface";
 export class ThemeService {
   private apiUrl: string = `${environment.backendUrl}`;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private errorHandlingService: ErrorHandlingService) {
+
   }
 
   getAllThemes(): Observable<ThemeDTO[]> {
@@ -42,7 +44,7 @@ export class ThemeService {
       const decodedToken: any = jwtDecode(token);
       return decodedToken.userId;
     } catch (error) {
-      console.error('Erreur de décodage du token:', error);
+      this.errorHandlingService.handleError();
       return null;
     }
   }

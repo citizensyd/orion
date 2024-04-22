@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NotFoundComponent } from './component/not-found/not-found.component';
 import { authGuard } from './guards/auth.guard';
 import { unauthGuard } from './guards/unauth.guard';
+import {ErrorComponent} from "./component/error/error.component";
 
 export const routes: Routes = [
   {
@@ -25,8 +25,8 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadChildren: () => import('./modules/article/article.module').then(m => m.ArticleModule)
   },
-  { path: '404', component: NotFoundComponent },
-  { path: '**', redirectTo: '404' }
+  { path: 'error', component: ErrorComponent },
+  { path: '**', redirectTo: 'error' }
 ];
 
 @NgModule({

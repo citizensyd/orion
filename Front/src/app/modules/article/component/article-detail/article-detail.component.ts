@@ -7,6 +7,7 @@ import {DatePipe, NgIf} from "@angular/common";
 import {TruncatePipe} from "../../../../pipes/truncate.pipe";
 import {CommentComponent} from "../comment/comment.component";
 import {Subscription} from "rxjs";
+import {ErrorHandlingService} from "../../../../services/error-service";
 
 @Component({
   selector: 'app-article-detail',
@@ -29,6 +30,7 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private articleService: ArticleService,
+    private errorHandlingService: ErrorHandlingService
   ) {
   }
 
@@ -37,19 +39,17 @@ export class ArticleDetailComponent implements OnInit, OnDestroy {
       const id: string | null = params.get('id');
       if (id) {
         this.loadArticle(+id);
-      } else {
-        console.error('Article ID is missing in the route parameters.');
       }
     });
   }
 
   private loadArticle(articleId: number): void {
     this.articleService.getArticleById(articleId).subscribe({
-      next: (article: ArticleDTO) => {
+      next: (article: ArticleDTO): void => {
         this.article = article;
       },
-      error: (error: any) => {
-        console.error('Failed to load the article:', error);
+      error: (): void => {
+        this.errorHandlingService.handleError();
         this.article = null;
       }
     });

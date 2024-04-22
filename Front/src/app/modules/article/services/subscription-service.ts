@@ -13,8 +13,6 @@ export class SubscriptionService {
   private apiUrl: string = environment.backendUrl;
   private articleUrl: string = environment.articleUrl;
 
-
-
   constructor(private http: HttpClient) { }
 
   // Récupère tous les articles
@@ -37,7 +35,7 @@ export class SubscriptionService {
         if (!subscriptions || subscriptions.length === 0) {
           return [];
         }
-        const subscribedThemeIds = subscriptions.map(sub => sub.id);
+        const subscribedThemeIds: number[] = subscriptions.map(sub => sub.id);
         return articles.filter(article => subscribedThemeIds.includes(article.themeId));
       })
     );
