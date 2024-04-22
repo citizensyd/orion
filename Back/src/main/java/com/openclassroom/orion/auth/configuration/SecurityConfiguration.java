@@ -2,6 +2,7 @@ package com.openclassroom.orion.auth.configuration;
 
 import com.openclassroom.orion.auth.JWT.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -23,6 +24,8 @@ public class SecurityConfiguration {
 
     private final AuthenticationProvider authenticationProvider;
 
+    @Value("${cors.allowed.origins:http://localhost:4200}")
+    private String corsAllowedOrigins;
     private static final String[] NO_AUTHENTICATION = {
             "/api/auth/login",
             "/api/auth/register",
@@ -66,7 +69,7 @@ public class SecurityConfiguration {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:4200");
+        config.addAllowedOrigin(corsAllowedOrigins);
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 

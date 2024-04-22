@@ -1,9 +1,6 @@
 package com.openclassroom.orion.module.subscription.controller;
 
-import com.openclassroom.orion.module.subscription.dto.SubscriptionDTO;
-import com.openclassroom.orion.module.subscription.dto.SubscriptionGetByIdRequest;
-import com.openclassroom.orion.module.subscription.dto.SubscriptionRequest;
-import com.openclassroom.orion.module.subscription.dto.ThemeDTO;
+import com.openclassroom.orion.module.subscription.dto.*;
 import com.openclassroom.orion.module.subscription.service.SubscriptionService;
 import com.openclassroom.orion.module.user.repository.UserRepository;
 import com.openclassroom.orion.module.user.service.UserService;
@@ -55,10 +52,10 @@ public class SubscriptionController {
                     @ApiResponse(responseCode = "400", description = "Requête invalide", content = @Content()),
                     @ApiResponse(responseCode = "409", description = "L'utilisateur est déjà abonné à ce thème.")
             })
-    public ResponseEntity<Map<String, String>> subscribeToTheme(@Valid @RequestBody SubscriptionRequest subscriptionRequest) {
+    public ResponseEntity<ApiResponseDTO> subscribeToTheme(@Valid @RequestBody SubscriptionRequest subscriptionRequest) {
         subscriptionService.subscriptionTheme(subscriptionRequest);
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Abonnement réalisé avec succès.");
+        ApiResponseDTO response = new ApiResponseDTO();
+        response.setMessage("Abonnement réalisé avec succès.");
         return ResponseEntity.ok(response);
     }
 
@@ -70,10 +67,10 @@ public class SubscriptionController {
                     @ApiResponse(responseCode = "200", description = "Désabonnement réalisé avec succès"),
                     @ApiResponse(responseCode = "400", description = "Requête invalide", content = @Content()),
             })
-    public ResponseEntity<Map<String, String>> unsubscribeFromTheme(@Valid @RequestBody SubscriptionRequest subscriptionRequest) {
+    public ResponseEntity<ApiResponseDTO> unsubscribeFromTheme(@Valid @RequestBody SubscriptionRequest subscriptionRequest) {
         subscriptionService.unsubscriptionTheme(subscriptionRequest);
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Désabonnement réalisé avec succès.");
+        ApiResponseDTO response = new ApiResponseDTO();
+        response.setMessage("Désabonnement réalisé avec succès.");
         return ResponseEntity.ok(response);
     }
 
