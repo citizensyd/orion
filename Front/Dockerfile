@@ -10,7 +10,7 @@ RUN npm install
 COPY . .
 
 # Build le projet Angular pour la production
-RUN npm run build --configuration production --project Front
+RUN npm run build --configuration production
 
 # Utilise une image Nginx pour servir l'application Angular
 FROM nginx:alpine
