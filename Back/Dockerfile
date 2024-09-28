@@ -19,13 +19,12 @@ WORKDIR /app
 # Copie le fichier JAR de l'application construit précédemment
 COPY --from=build /app/target/*.jar app.jar
 
+# Copie le script de démarrage dans l'image
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
 # Expose le port 8080 pour le back-end
 EXPOSE 8080
 
-# Commande pour démarrer l'application en lisant les secrets depuis /run/secrets/
-ENTRYPOINT ["java", "-jar", "app.jar", \
-  "--spring.datasource.url=$(cat /run/secrets/database_url)", \
-  "--spring.datasource.username=$(cat /run/secrets/database_username)", \
-  "--spring.datasource.password=$(cat /run/secrets/database_password)", \
-  "--jwt.secret=$(cat /run/secrets/jwt_key)", \
-  "--cors.allowed-origins=$(cat /run/secrets/cors_allowed_origins)"]
+# Utiliser le script de démarrage comme point d'entrée
+ENTRYPOINT ["/app/start.sh"]
