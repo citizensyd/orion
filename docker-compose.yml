@@ -24,7 +24,7 @@ services:
         condition: on-failure
 
   backend:
-    build: citizensyd/backend:latest
+    image: citizensyd/backend:latest
     ports:
       - "3001:3001"
     networks:
@@ -47,7 +47,7 @@ services:
         condition: on-failure
 
   frontend:
-    build: citizensyd/frontend:latest
+    image: citizensyd/frontend:latest
     environment:
       - NODE_ENV=production
     networks:
