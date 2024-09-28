@@ -14,7 +14,7 @@ services:
     ports:
       - "3306:3306"
     networks:
-      - orion_stack_app-network
+      - app-network
     volumes:
       - mysql_data:/var/lib/mysql
       - ./Back/src/main/resources/create_orion_db.sql:/docker-entrypoint-initdb.d/create_orion_db.sql
@@ -28,7 +28,7 @@ services:
     ports:
       - "3001:3001"
     networks:
-      - orion_stack_app-network
+      - app-network
     secrets:
       - database_url
       - database_username
@@ -47,7 +47,7 @@ services:
     ports:
       - "8080:80"
     networks:
-      - orion_stack_app-network
+      - app-network
     deploy:
       replicas: 1
       restart_policy:
@@ -63,7 +63,7 @@ services:
       - frontend
       - backend
     networks:
-      - orion_stack_app-network
+      - app-network
     deploy:
       replicas: 1
       restart_policy:
@@ -84,7 +84,7 @@ secrets:
     external: true
 
 networks:
-  orion_stack:
+  app-network:
     driver: overlay
 
 volumes:
