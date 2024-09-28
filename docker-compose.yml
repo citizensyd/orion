@@ -85,7 +85,7 @@ secrets:
 
 networks:
   orion_stack_app-network:
-    external: true
+    driver: overlay
 
 volumes:
   mysql_data:
