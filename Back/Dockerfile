@@ -23,8 +23,8 @@ COPY --from=build /app/target/*.jar app.jar
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
-# Expose le port 8080 pour le back-end
-EXPOSE 8080
+# Expose le port 3001 pour le back-end
+EXPOSE 3001
 
 # Utiliser le script de démarrage comme point d'entrée
 ENTRYPOINT ["/app/start.sh"]
