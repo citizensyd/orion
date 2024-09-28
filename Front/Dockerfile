@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm install
 
 # Copie tout le reste du code source Angular
-COPY . .
+COPY Front/ ./
 
 # Build le projet Angular pour la production
 RUN npm run build -- --configuration production --project Front
