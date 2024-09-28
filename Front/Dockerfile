@@ -12,9 +12,3 @@ COPY . .
 # Build le projet Angular pour la production
 RUN npm run build -- --configuration production --project Front
 
-# Utilise une image Nginx pour servir l'application Angular
-FROM nginx:alpine
-COPY --from=build /Front/dist/front /usr/share/nginx/html
-
-# Expose le port 80 pour le front-end
-EXPOSE 80
