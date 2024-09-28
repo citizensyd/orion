@@ -37,3 +37,6 @@ build/
 Front/.vscode/
 
 
+/secrets/
+
+/Front/dist/
