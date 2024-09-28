@@ -22,5 +22,10 @@ COPY --from=build /app/target/*.jar app.jar
 # Expose le port 8080 pour le back-end
 EXPOSE 8080
 
-# Démarre l'application et passe le mot de passe via le fichier secret
-ENTRYPOINT ["java", "-jar", "app.jar", "--spring.datasource.password=$(cat /run/secrets/backend_db_password)"]
+# Commande pour démarrer l'application en lisant les secrets depuis /run/secrets/
+ENTRYPOINT ["java", "-jar", "app.jar", \
+  "--spring.datasource.url=$(cat /run/secrets/database_url)", \
+  "--spring.datasource.username=$(cat /run/secrets/database_username)", \
+  "--spring.datasource.password=$(cat /run/secrets/database_password)", \
+  "--jwt.secret=$(cat /run/secrets/jwt_key)", \
+  "--cors.allowed-origins=$(cat /run/secrets/cors_allowed_origins)"]
