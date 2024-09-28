@@ -84,7 +84,7 @@ secrets:
     external: true
 
 networks:
-  orion_stack_app-network:
+  orion_stack:
     driver: overlay
 
 volumes:
