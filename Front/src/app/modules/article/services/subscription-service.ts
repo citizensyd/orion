@@ -4,7 +4,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ArticleDTO } from '../interfaces/ArticleDTO.interface';
 import { SubscriptionDTO } from '../interfaces/subscription.interface';
-import { environment } from '../../../../environment/environment';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

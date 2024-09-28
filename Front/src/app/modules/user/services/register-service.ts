@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {catchError, Observable, throwError} from 'rxjs';
-import { environment } from '../../../../environment/environment';
+import { environment } from '../../../../environments/environment';
 import {RegisterRequest} from "../interfaces/register-request.interface";
 import {RegisterResponse} from "../interfaces/register-response.interface";
 

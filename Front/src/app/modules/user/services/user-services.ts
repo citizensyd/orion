@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {BehaviorSubject, catchError, Observable, of, tap, throwError} from 'rxjs';
 import { LoginRequest} from '../interfaces/login-request.interface';
 import { AuthResponse } from '../interfaces/auth-response.interface';
-import { environment } from '../../../../environment/environment';
+import { environment } from '../../../../environments/environment';
 import { jwtDecode } from "jwt-decode";
 import {ErrorHandlingService} from "../../../services/error-service";
 
