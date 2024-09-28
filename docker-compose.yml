@@ -6,9 +6,10 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_password
       MYSQL_DATABASE: orion
-      MYSQL_USER: fab
+      MYSQL_USER: project1_user1
       MYSQL_PASSWORD_FILE: /run/secrets/database_password
     secrets:
+      - mysql_password
       - database_password
     ports:
       - "3306:3306"
@@ -59,20 +60,18 @@ services:
       - app-network
 
 secrets:
-  mysql_root_password:
-    file: ./secrets/mysql_root_password.txt
   mysql_password:
-    file: ./secrets/mysql_password.txt
-  database_url:
-    file: ./secrets/database_url.txt
-  database_username:
-    file: ./secrets/database_username.txt
+    external: true
   database_password:
-    file: ./secrets/database_password.txt
+    external: true
+  database_url:
+    external: true
+  database_username:
+    external: true
   jwt_key:
-    file: ./secrets/jwt_key.txt
+    external: true
   cors_allowed_origins:
-    file: ./secrets/cors_allowed_origins.txt
+    external: true
 
 networks:
   app-network:
