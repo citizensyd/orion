@@ -1,14 +1,25 @@
-# Utilise une image Node.js pour builder le projet Angular
+# Étape 1: Build de l'application Angular
 FROM node:18 AS build
-WORKDIR /Front
+WORKDIR /app
 
-# Copie les fichiers package.json et package-lock.json
+# Copier package.json et package-lock.json pour installer les dépendances
 COPY package*.json ./
 RUN npm install
 
-# Copie tout le reste du code source Angular
+# Copier le reste du projet Angular
 COPY . .
 
-# Build le projet Angular pour la production
+# Build du projet Angular en mode production
 RUN npm run build -- --configuration production --project Front
 
+# Étape finale: Utiliser les fichiers buildés dans Nginx
+FROM nginx:latest
+
+# Copier les fichiers Angular buildés dans le répertoire nginx/html
+COPY --from=build /app/dist/Front /usr/share/nginx/html
+
+# Exposer le port 80 pour le service HTTP
+EXPOSE 80
+
+# Commande par défaut pour démarrer Nginx
+CMD ["nginx", "-g", "daemon off;"]
