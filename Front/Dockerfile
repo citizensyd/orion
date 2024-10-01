@@ -17,7 +17,9 @@ FROM nginx:latest
 
 # Copier les fichiers Angular buildés dans le répertoire nginx/html
 COPY --from=build /app/dist/front/browser/* /usr/share/nginx/html
-COPY ./nginx.conf  /etc/nginx/conf.d/default.conf
+COPY default.conf  /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
+
 # Exposer le port 80 pour le service HTTP
 EXPOSE 80
 
