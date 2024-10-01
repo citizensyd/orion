@@ -52,7 +52,7 @@ services:
         condition: on-failure
 
   nginx:
-    image: nginx:latest
+    image: citizensyd/nginx-custom:latest
     ports:
       - "80:80"
     volumes:
