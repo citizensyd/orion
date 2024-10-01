@@ -1,6 +1,6 @@
 <header [ngClass]="{'article-theme-profil': (isConnected$ | async)}">
   <img [ngClass]="{'logo-article-profil-theme': (isConnected$ | async),
-   'logo': !(isConnected$ | async)}" src="../../../../assets/images/logo.png" alt="logo de MDD">
+   'logo': !(isConnected$ | async)}" [src]="assetPath + 'images/logo.png'" alt="logo de MDD">
   <app-menu [ngClass]="{'app-menu-display': (isConnected$ | async)}"></app-menu>
   <app-menu-toggle [ngClass]="{'menu-open': menuOpen}"></app-menu-toggle>
 </header>

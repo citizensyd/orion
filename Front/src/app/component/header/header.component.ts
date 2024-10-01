@@ -6,6 +6,7 @@ import {MenuComponent} from "../menu/menu.component";
 import {MenuToggleComponent} from "../menu-toggle/menu-toggle.component";
 import {MenuStateService} from "../menu-toggle/menu-state-service";
 import {RouterLink} from "@angular/router";
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -24,6 +25,7 @@ export class HeaderComponent implements OnInit, OnDestroy{
   isConnected$: Observable<boolean>;
   menuOpen: boolean = false;
   menuSubscription: Subscription;
+  public assetPath: string = environment.assetPath;
   constructor(private authService: AuthService, private menuStateService: MenuStateService) {
     this.isConnected$ = this.authService.$isLogged();
     this.menuSubscription = new Subscription();
