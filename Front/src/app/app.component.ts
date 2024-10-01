@@ -5,8 +5,8 @@ import { AuthService } from './modules/user/services/user-services';
 import {AsyncPipe, NgIf} from "@angular/common";
 import {ButtonComponent} from "./component/button/classique/button.component";
 import {LogoComponent} from "./component/logo/logo.component";
-import {LoginComponent} from "./modules/user/component/login/login.component";
 import {HeaderComponent} from "./component/header/header.component";
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
   clickedLogin: boolean = false;
   clickedRegister: boolean = false;
   isLogged$: Observable<boolean>;
+  public assetPath: string = environment.assetPath;
+
 
   constructor(private router: Router, private authService: AuthService) {
     this.isLogged$ = this.authService.$isLogged();

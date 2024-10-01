@@ -5,7 +5,7 @@
   </div>
   <ng-template #notLogged>
     <div class="app-logo-button">
-      <img src="../../../../assets/images/logo.png" alt="logo de MDD">
+      <img [src]="assetPath + 'images/logo.png'" alt="logo de MDD">
       <div class="app-button">
         <app-button buttonText="Se connecter" (click)="navigateToLogin()"></app-button>
         <app-button buttonText="S'inscrire" (click)="navigateToRegister()"></app-button>
