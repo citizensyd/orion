@@ -1,6 +1,9 @@
 # Utiliser l'image de base Nginx officielle
 FROM nginx:latest
 
+#Supprime le fichier de configuration par défaut
+RUN rm /etc/nginx/conf.d/default.conf
+
 # Copier votre fichier nginx.conf dans le conteneur
 COPY nginx.conf /etc/nginx/nginx.conf
 
