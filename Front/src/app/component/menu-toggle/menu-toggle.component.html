@@ -1,11 +1,11 @@
-  <img class="hamburger" src="../../../../assets/images/menu.png" alt="menu" (click)="toggleMenu()">
+  <img class="hamburger" src="assets/images/menu.png" alt="menu" (click)="toggleMenu()">
   <div class="menu" [ngClass]="{'menu-open': menuOpen}">
     <span (click)="toggleMenu()">X</span>
     <nav>
       <ul>
         <li [ngClass]="{'nav-item-active': isArticlesRouteActive()}"><a routerLink="/articles">Articles</a></li>
         <li [ngClass]="{'nav-item-active': isThemesRouteActive()}"><a routerLink="/themes">Thèmes</a></li>
-        <li class="flex-large"><a routerLink="/profil"><img src="../assets/images/profile_grey.png" alt="Profil"/></a></li>
+        <li class="flex-large"><a routerLink="/profil"><img src="assets/images/profile_grey.png" alt="Profil"/></a></li>
       </ul>
     </nav>
   </div>
