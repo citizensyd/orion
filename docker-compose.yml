@@ -64,7 +64,7 @@ services:
       #- ./certbot/letsencrypt:/etc/letsencrypt
     depends_on:
       - frontend
-      - backend
+      #- backend
     networks:
       - app-network
     deploy:
