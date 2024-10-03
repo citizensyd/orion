@@ -55,8 +55,13 @@ services:
     image: citizensyd/nginx-custom:latest
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - nginx_logs:/var/log/nginx
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certbot/conf:/etc/nginx/conf.d
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/letsencrypt:/etc/letsencryptL
     depends_on:
       - frontend
       - backend
