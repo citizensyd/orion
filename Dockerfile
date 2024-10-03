@@ -13,7 +13,7 @@ RUN apt-get update && \
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copier vos fichiers de configuration de site (comme site1.conf)
-COPY certbot/conf/site1.conf /etc/nginx/conf.d/site1.conf
+COPY site1.conf /etc/nginx/conf.d/site1.conf
 
 # Exposer le port 80 et 443 pour HTTP et HTTPS
 EXPOSE 80 443

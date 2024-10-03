@@ -4,10 +4,13 @@
 nginx &
 
 # Attendre que Nginx soit complètement démarré avant de procéder
-sleep 5
+while ! curl -s http://localhost >/dev/null; do
+  echo "Attente du démarrage de Nginx..."
+  sleep 2
+done
 
 # Obtenir les certificats Let's Encrypt
-certbot certonly --webroot --webroot-path=/var/www/certbot --agree-tos --email letsencryptcerbotngi.ntpjm@passmail.net -d site1.srv546916.hstgr.cloud --non-interactive
+certbot certonly --webroot --webroot-path=/var/www/certbot --agree-tos --email guillard.fab@gmail.com -d site1.srv546916.hstgr.cloud --non-interactive
 
 # Si l'obtention du certificat a échoué, sortir avec une erreur
 if [ $? -ne 0 ]; then
@@ -21,10 +24,13 @@ while :; do
 
   # Renouveler les certificats
   certbot renew
-
-  # Redémarrer Nginx pour charger les nouveaux certificats
-  echo "Redémarrage de Nginx..."
-  nginx -s reload
+  if [ $? -ne 0 ]; then
+    echo "Le renouvellement des certificats a échoué."
+  else
+    echo "Renouvellement des certificats réussi."
+    # Redémarrer Nginx pour charger les nouveaux certificats
+    nginx -s reload
+  fi
 
   # Attendre 12 heures avant la prochaine tentative de renouvellement
   sleep 12h
