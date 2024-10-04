@@ -3,7 +3,7 @@
 # Fonction pour vérifier si Nginx est démarré
 function wait_for_nginx() {
   echo "Vérification du démarrage de Nginx..."
-  while ! nc -z localhost 80; do
+  while ! curl -s http://localhost > /dev/null; do
     echo "Nginx n'est pas encore démarré, en attente..."
     sleep 2
   done

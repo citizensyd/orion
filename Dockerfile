@@ -6,7 +6,6 @@ RUN rm /etc/nginx/conf.d/default.conf
 
 # Installer Certbot pour gérer les certificats Let's Encrypt
 RUN apt-get update && \
-    apt-get install -y netcat-openbsd &&\
     apt-get install -y certbot python3-certbot-nginx && \
     rm -rf /var/lib/apt/lists/*
 
