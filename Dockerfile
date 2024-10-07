@@ -5,9 +5,9 @@ FROM nginx:latest
 RUN rm /etc/nginx/conf.d/default.conf
 
 # Installer Certbot pour gérer les certificats Let's Encrypt
-RUN apt-get update && \
-    apt-get install -y certbot python3-certbot-nginx && \
-    rm -rf /var/lib/apt/lists/*
+#RUN apt-get update && \
+#    apt-get install -y certbot python3-certbot-nginx && \
+#    rm -rf /var/lib/apt/lists/*
 
 # Copier votre fichier nginx.conf dans le conteneur
 COPY nginx.conf /etc/nginx/nginx.conf
@@ -19,8 +19,8 @@ COPY site1.conf /etc/nginx/conf.d/site1.conf
 EXPOSE 80 443
 
 # Ajouter un script pour exécuter certbot et renouveler les certificats automatiquement
-COPY ./scripts/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+#COPY ./scripts/entrypoint.sh /entrypoint.sh
+#RUN chmod +x /entrypoint.sh
 
 # Commande par défaut pour démarrer Nginx et Certbot
-CMD ["/entrypoint.sh"]
+#CMD ["/entrypoint.sh"]
