@@ -62,7 +62,7 @@ services:
       #- ./certbot/conf:/etc/nginx/conf.d
       #- ./certbot/www:/var/www/certbot
       #- ./certbot/letsencrypt:/etc/letsencrypt
-    depends_on:
+    #depends_on:
       #- frontend
       #- backend
     networks:
