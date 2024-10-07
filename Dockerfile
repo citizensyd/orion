@@ -15,8 +15,11 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copier vos fichiers de configuration de site (comme site1.conf)
 COPY site1.conf /etc/nginx/conf.d/site1.conf
 
-# Exposer le port 80 et 443 pour HTTP et HTTPS
-EXPOSE 80 443
+# Exposer le port 80
+EXPOSE 80
+
+# Commande par défaut pour démarrer Nginx
+CMD ["nginx", "-g", "daemon off;"]
 
 # Ajouter un script pour exécuter certbot et renouveler les certificats automatiquement
 #COPY ./scripts/entrypoint.sh /entrypoint.sh
