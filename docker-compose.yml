@@ -1,13 +1,15 @@
-version: '3.7'
-
 services:
   mysql:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_password
-      MYSQL_DATABASE: orion
-      MYSQL_USER: project1_user1
-      MYSQL_PASSWORD_FILE: /run/secrets/database_password
+      #- MYSQL_ROOT_PASSWORD=PinK1973
+      #- MYSQL_DATABASE=orion
+      #- MYSQL_USER=fab
+      #- MYSQL_PASSWORD=PinK1973
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_password
+      - MYSQL_DATABASE=orion
+      - MYSQL_USER=project1_user1
+      - MYSQL_PASSWORD_FILE=/run/secrets/database_password
     secrets:
       - mysql_password
       - database_password
@@ -24,9 +26,18 @@ services:
         condition: on-failure
 
   backend:
-    image: citizensyd/backend:latest
+    image: citizensyd/backend:v0.14
+    environment:
+      - ENV=prod
+      #- DATABASE_URL=jdbc:mysql://mysql:3306/orion
+      #- DATABASE_USERNAME=fab
+      #- DATABASE_PASSWORD=PinK1973
+      #- JWT_KEY=5e1305721345a915133b670a562ae8ea123f4e6f923066fdbc39ca41f2031b80
+      #- CORS_ALLOWED_ORIGINS=http://localhost:8080
     ports:
       - "3001:3001"
+    depends_on:
+      - mysql
     networks:
       - app-network
     secrets:
@@ -41,7 +52,7 @@ services:
         condition: on-failure
 
   frontend:
-    image: citizensyd/frontend:latest
+    image: citizensyd/frontend:v0.03
     networks:
       - app-network
     ports:
@@ -52,7 +63,7 @@ services:
         condition: on-failure
 
   nginx:
-    image: citizensyd/nginx-custom:latest
+    image: citizensyd/nginx-custom:v0.01
     ports:
       - "80:80"
       #- "443:443"
@@ -62,9 +73,9 @@ services:
       #- ./certbot/conf:/etc/nginx/conf.d
       #- ./certbot/www:/var/www/certbot
       #- ./certbot/letsencrypt:/etc/letsencrypt
-    #depends_on:
-      #- frontend
-      #- backend
+    depends_on:
+      - frontend
+      - backend
     networks:
       - app-network
     deploy:
@@ -85,6 +96,8 @@ secrets:
     external: true
   cors_allowed_origins:
     external: true
+
+
 
 networks:
   app-network:

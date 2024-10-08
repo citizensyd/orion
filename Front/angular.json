@@ -36,6 +36,9 @@
             "scripts": []
           },
           "configurations": {
+            "test-local": {
+              "fileReplacements": []
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -63,7 +66,7 @@
               "sourceMap": true
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "test-local"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",

@@ -19,6 +19,9 @@ WORKDIR /app
 # Copie le fichier JAR de l'application construit précédemment
 COPY --from=build /app/target/*.jar app.jar
 
+# Copie le fichier dev.env dans le conteneur
+#COPY dev.env /app/dev.env
+
 # Copie le script de démarrage dans l'image
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
