@@ -14,6 +14,13 @@ public class EnvironmentConfig {
 
         // En développement local, utiliser dev.env
         String env = System.getenv("ENV");
+        System.out.println("Current ENV: " + env);  // Log de la valeur de ENV
+
+        if ("prod".equals(env)) {
+            // Ne pas charger dev.env en production
+            return configurer;
+        }
+
         if (env == null || env.equals("dev")) {
             configurer.setLocation(new FileSystemResource("dev.env"));
         }
