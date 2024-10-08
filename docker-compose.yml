@@ -26,7 +26,7 @@ services:
         condition: on-failure
 
   backend:
-    image: citizensyd/backend:v0.14
+    image: citizensyd/backend:v0.15
     environment:
       - ENV=prod
       #- DATABASE_URL=jdbc:mysql://mysql:3306/orion
@@ -52,7 +52,7 @@ services:
         condition: on-failure
 
   frontend:
-    image: citizensyd/frontend:v0.03
+    image: citizensyd/frontend:v0.04
     networks:
       - app-network
     ports:
@@ -63,7 +63,7 @@ services:
         condition: on-failure
 
   nginx:
-    image: citizensyd/nginx-custom:v0.01
+    image: citizensyd/nginx-custom:v0.02
     ports:
       - "80:80"
       #- "443:443"

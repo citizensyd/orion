@@ -9,7 +9,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 #    apt-get install -y certbot python3-certbot-nginx && \
 #    rm -rf /var/lib/apt/lists/*
 
-Copier votre fichier nginx.conf dans le conteneur
+#Copier votre fichier nginx.conf dans le conteneur
 COPY nginx.conf /etc/nginx/nginx.conf
 
 #Copier vos fichiers de configuration de site (comme site1.conf)
