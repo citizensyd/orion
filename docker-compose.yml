@@ -6,10 +6,10 @@ services:
       #- MYSQL_DATABASE=orion
       #- MYSQL_USER=fab
       #- MYSQL_PASSWORD=PinK1973
-      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_password
+      - MYSQL_ROOT_PASSWORD=/run/secrets/mysql_password
       - MYSQL_DATABASE=orion
       - MYSQL_USER=project1_user1
-      - MYSQL_PASSWORD_FILE=/run/secrets/database_password
+      - MYSQL_PASSWORD=/run/secrets/database_password
     secrets:
       - mysql_password
       - database_password
@@ -39,8 +39,8 @@ services:
       #- CORS_ALLOWED_ORIGINS=http://localhost:8080
     ports:
       - "3001:3001"
-    #depends_on:
-     # - mysql
+    depends_on:
+      - mysql
     networks:
       - app-network
     secrets:
@@ -63,6 +63,8 @@ services:
       - app-network
     ports:
       - "8080:80"
+    depends_on:
+      - mysql
     deploy:
       replicas: 1
       restart_policy:
@@ -81,9 +83,9 @@ services:
       #- ./certbot/conf:/etc/nginx/conf.d
       #- ./certbot/www:/var/www/certbot
       #- ./certbot/letsencrypt:/etc/letsencrypt
-    #depends_on:
-      #- frontend
-      #- backend
+    depends_on:
+      - frontend
+      - backend
     networks:
       - app-network
     deploy:
