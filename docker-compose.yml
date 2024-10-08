@@ -24,6 +24,9 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
+        delay: 5s          # Attend 5 secondes avant de redémarrer
+        max_attempts: 3     # Tentatives de redémarrage maximales : 3
+        window: 120s        # Compter les tentatives sur une période de 120 secondes
 
   backend:
     image: citizensyd/backend:v0.15
@@ -50,6 +53,9 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 90s
 
   frontend:
     image: citizensyd/frontend:v0.04
@@ -60,7 +66,9 @@ services:
     deploy:
       replicas: 1
       restart_policy:
-        condition: on-failure
+        condition: any       # Toujours redémarrer en cas d'arrêt, qu'il soit réussi ou échoué
+        delay: 5s
+        max_attempts: 3
 
   nginx:
     image: citizensyd/nginx-custom:v0.02
@@ -81,7 +89,10 @@ services:
     deploy:
       replicas: 1
       restart_policy:
-        condition: on-failure
+        condition: any
+        delay: 5s
+        max_attempts: 5
+        window: 60s
 
 secrets:
   mysql_password:
@@ -96,8 +107,6 @@ secrets:
     external: true
   cors_allowed_origins:
     external: true
-
-
 
 networks:
   app-network:
