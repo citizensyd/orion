@@ -6,10 +6,10 @@ services:
       #- MYSQL_DATABASE=orion
       #- MYSQL_USER=fab
       #- MYSQL_PASSWORD=PinK1973
-      - MYSQL_ROOT_PASSWORD=/run/secrets/mysql_password
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_password
       - MYSQL_DATABASE=orion
       - MYSQL_USER=project1_user1
-      - MYSQL_PASSWORD=/run/secrets/database_password
+      - MYSQL_PASSWORD_FILE=/run/secrets/database_password
     secrets:
       - mysql_password
       - database_password
@@ -27,6 +27,11 @@ services:
         delay: 5s          # Attend 5 secondes avant de redémarrer
         max_attempts: 3     # Tentatives de redémarrage maximales : 3
         window: 120s        # Compter les tentatives sur une période de 120 secondes
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     image: citizensyd/backend:v0.16

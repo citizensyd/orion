@@ -2,11 +2,16 @@
 
 # Lire les secrets montés par Docker Swarm en production
 if [ "$ENV" = "prod" ]; then
-  SPRING_DATASOURCE_URL=$(cat /run/secrets/database_url)
-  SPRING_DATASOURCE_USERNAME=$(cat /run/secrets/database_username)
-  SPRING_DATASOURCE_PASSWORD=$(cat /run/secrets/database_password)
-  JWT_SECRET=$(cat /run/secrets/jwt_key)
-  CORS_ALLOWED_ORIGINS=$(cat /run/secrets/cors_allowed_origins)
+  if [ -f /run/secrets/database_url ] && [ -f /run/secrets/database_username ] && [ -f /run/secrets/database_password ] && [ -f /run/secrets/jwt_key ] && [ -f /run/secrets/cors_allowed_origins ]; then
+    SPRING_DATASOURCE_URL=$(cat /run/secrets/database_url)
+    SPRING_DATASOURCE_USERNAME=$(cat /run/secrets/database_username)
+    SPRING_DATASOURCE_PASSWORD=$(cat /run/secrets/database_password)
+    JWT_SECRET=$(cat /run/secrets/jwt_key)
+    CORS_ALLOWED_ORIGINS=$(cat /run/secrets/cors_allowed_origins)
+  else
+    echo "Erreur : Un ou plusieurs secrets requis sont manquants."
+    exit 1
+  fi
 
   exec java -jar app.jar \
     --spring.datasource.url=$SPRING_DATASOURCE_URL \
