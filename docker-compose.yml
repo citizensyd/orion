@@ -29,7 +29,7 @@ services:
         window: 120s        # Compter les tentatives sur une période de 120 secondes
 
   backend:
-    image: citizensyd/backend:v0.15
+    image: citizensyd/backend:v0.16
     environment:
       - ENV=prod
       #- DATABASE_URL=jdbc:mysql://mysql:3306/orion
@@ -58,7 +58,7 @@ services:
         window: 90s
 
   frontend:
-    image: citizensyd/frontend:v0.04
+    image: citizensyd/frontend:v0.05
     networks:
       - app-network
     ports:
@@ -73,7 +73,7 @@ services:
         max_attempts: 3
 
   nginx:
-    image: citizensyd/nginx-custom:v0.02
+    image: citizensyd/nginx-custom:v0.03
     ports:
       - "80:80"
       #- "443:443"
