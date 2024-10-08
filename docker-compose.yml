@@ -4,17 +4,17 @@ services:
   mysql:
     image: mysql:8.0
     environment:
-      #- MYSQL_ROOT_PASSWORD=PinK1973
-      #- MYSQL_DATABASE=orion
-      #- MYSQL_USER=fab
-      #- MYSQL_PASSWORD=PinK1973
-      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_password
+      - MYSQL_ROOT_PASSWORD=PinK1973
       - MYSQL_DATABASE=orion
-      - MYSQL_USER=project1_user1
-      - MYSQL_PASSWORD_FILE=/run/secrets/database_password
-    secrets:
-      - mysql_password
-      - database_password
+      - MYSQL_USER=fab
+      - MYSQL_PASSWORD=PinK1973
+      #- MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_password
+      #- MYSQL_DATABASE=orion
+      #- MYSQL_USER=project1_user1
+      #- MYSQL_PASSWORD_FILE=/run/secrets/database_password
+    #secrets:
+      #- mysql_password
+      #- database_password
     ports:
       - "3306:3306"
     networks:
