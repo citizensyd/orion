@@ -122,4 +122,4 @@ networks:
 
 volumes:
   mysql_data:
-  nginx_logs:
+  #nginx_logs:
