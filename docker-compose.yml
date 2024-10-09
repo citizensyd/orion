@@ -26,9 +26,7 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
-        delay: 5s          # Attend 5 secondes avant de redémarrer
-        max_attempts: 3     # Tentatives de redémarrage maximales : 3
-        window: 120s        # Compter les tentatives sur une période de 120 secondes
+
 #    healthcheck:
 #      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
 #      interval: 10s
