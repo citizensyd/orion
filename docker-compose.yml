@@ -36,7 +36,8 @@ services:
 
   backend:
     image: citizensyd/backend:v0.23
-    #environment:
+    environment:
+      - ENV=prod
       #- DATABASE_URL=jdbc:mysql://mysql:3306/orion
       #- DATABASE_USERNAME=fab
       #- DATABASE_PASSWORD=PinK1973
