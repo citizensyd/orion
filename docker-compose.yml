@@ -13,6 +13,7 @@ services:
       MYSQL_DATABASE: orion
       MYSQL_USER: project1_user1
       MYSQL_PASSWORD_FILE: /run/secrets/database_password
+      MYSQL_LOG_CONSOLE: 1
     secrets:
       - mysql_password
       - database_password
