@@ -28,7 +28,7 @@ import static io.jsonwebtoken.Jwts.builder;
 @Service
 public class JWTservice {
 
-    @Value("${JWT_KEY}")
+    @Value("${jwt.secret}")
     private String secretKey;
 
 

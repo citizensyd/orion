@@ -15,7 +15,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 #Copier vos fichiers de configuration de site (comme site1.conf)
 COPY site1.conf /etc/nginx/conf.d/site1.conf
 
-# Copier le script wait-for-it.sh
+# Copier le script wait-for.sh-it.sh
 COPY scripts/wait-for-it.sh /wait-for-it.sh
 RUN chmod +x /wait-for-it.sh
 
@@ -26,7 +26,7 @@ EXPOSE 80
 #EXPOSE 443
 
 # Commande par défaut pour démarrer Nginx, en attendant que le backend et frontend soient disponibles
-CMD /wait-for-it.sh backend:3001 -- /wait-for-it.sh frontend:80 -- nginx -g "daemon off;"
+CMD scripts/wait-for-it.sh backend:3001 -- scripts/wait-for-it.sh frontend:80 -- nginx -g "daemon off;"
 
 # Ajouter un script pour exécuter certbot et renouveler les certificats automatiquement
 #COPY ./scripts/entrypoint.sh /entrypoint.sh

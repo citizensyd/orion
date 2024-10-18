@@ -2,42 +2,38 @@ version: '3.8'
 
 services:
   mysql:
-    image: mysql:8.4.0
-    container_name: mysql
+    image: mysql:8.4.2
+    ports:
+      - "3306:3306"
     environment:
-#      - MYSQL_ROOT_PASSWORD=PinK1973
-#      - MYSQL_DATABASE=orion
-#      - MYSQL_USER=fab
-#      - MYSQL_PASSWORD=PinK1973
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_password
-      MYSQL_DATABASE: orion
       MYSQL_USER: project1_user1
+      MYSQL_DATABASE: orion
       MYSQL_PASSWORD_FILE: /run/secrets/database_password
-      MYSQL_LOG_CONSOLE: 1
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_password
+      MYSQL_INITDB_SKIP_TZINFO: "yes"
     secrets:
       - mysql_password
       - database_password
-    ports:
-      - "3306:3306"
     networks:
       - app-network
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./Back/src/main/resources/create_orion_db.sql:/docker-entrypoint-initdb.d/create_orion_db.sql
-      - ./scripts/init.sh:/docker-entrypoint-initdb.d/init.sh
+#      - ./my.cnf:/etc/mysql/my.cnf
+#      - ./mysql_logs:/var/log/mysql
+#      - ./Back/src/main/resources/create_orion_db.sql:/docker-entrypoint-initdb.d/create_orion_db.sql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
     deploy:
          replicas: 1
          restart_policy:
           condition: on-failure
 
-#    healthcheck:
-#      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-#      interval: 10s
-#      timeout: 5s
-#      retries: 5
-
   backend:
-    image: citizensyd/backend:v0.23
+    image: citizensyd/backend:v0.27
     environment:
       - ENV=prod
       #- DATABASE_URL=jdbc:mysql://mysql:3306/orion
@@ -79,30 +75,30 @@ services:
         condition: any
         delay: 5s
         max_attempts: 3
-#
-#  nginx:
-#    image: citizensyd/nginx-custom:v0.04
-#    ports:
-#      - "80:80"
-#      #- "443:443"
-#    volumes:
-#      - nginx_logs:/var/log/nginx
-#      - ./nginx.conf:/etc/nginx/nginx.conf
-#      #- ./certbot/conf:/etc/nginx/conf.d
-#      #- ./certbot/www:/var/www/certbot
-#      #- ./certbot/letsencrypt:/etc/letsencrypt
-#    depends_on:
-#      - frontend
-#      - backend
-#    networks:
-#      - app-network
-#    deploy:
-#      replicas: 1
-#      restart_policy:
-#        condition: any
-#        delay: 5s
-#        max_attempts: 5
-#        window: 60s
+
+  nginx:
+    image: citizensyd/nginx-custom:v0.05
+    ports:
+      - "80:80"
+      #- "443:443"
+    volumes:
+      - nginx_logs:/var/log/nginx
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      #- ./certbot/conf:/etc/nginx/conf.d
+      #- ./certbot/www:/var/www/certbot
+      #- ./certbot/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 5
+        window: 60s
 
 secrets:
   mysql_password:
@@ -124,4 +120,4 @@ networks:
 
 volumes:
   mysql_data:
-  #nginx_logs:
+  nginx_logs:

@@ -26,9 +26,9 @@ COPY --from=build /app/target/*.jar app.jar
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
-# Copie le script wait-for-it.sh pour attendre que MySQL soit prêt
-COPY scripts/wait-for-it.sh /app/wait-for-it.sh
-RUN chmod +x /app/wait-for-it.sh
+# Copie le script wait-for.sh-it.sh pour attendre que MySQL soit prêt
+#COPY scripts/wait-for.sh-it.sh /app/wait-for.sh-it.sh
+#RUN chmod +x /app/wait-for.sh-it.sh
 
 # Expose le port 3001 pour le back-end
 EXPOSE 3001
