@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 @EnableWebSecurity
@@ -24,7 +25,7 @@ public class SecurityConfiguration {
 
     private final AuthenticationProvider authenticationProvider;
 
-    @Value("${cors.allowed.origins:http://localhost:4200}")
+    @Value("${cors.allowed-origins:http://localhost:4200}")
     private String corsAllowedOrigins;
     private static final String[] NO_AUTHENTICATION = {
             "/api/auth/login",
@@ -49,6 +50,7 @@ public class SecurityConfiguration {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(NO_AUTHENTICATION)
                         .permitAll()
                         .anyRequest()
@@ -70,6 +72,7 @@ public class SecurityConfiguration {
 
         config.setAllowCredentials(true);
         config.addAllowedOrigin(corsAllowedOrigins);
+        config.addExposedHeader("Authorization");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
