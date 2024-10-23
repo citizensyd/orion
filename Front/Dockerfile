@@ -21,7 +21,7 @@ COPY default.conf  /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Exposer le port 80 pour le service HTTP
-EXPOSE 80
+#EXPOSE 80
 
 # Commande par défaut pour démarrer Nginx
 CMD ["nginx", "-g", "daemon off;"]

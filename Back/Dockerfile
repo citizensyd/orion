@@ -24,8 +24,8 @@ COPY --from=build /app/target/*.jar app.jar
 
 
 # Copie le script wait-for.sh-it.sh pour attendre que MySQL soit prêt
-#COPY scripts/wait-for.sh-it.sh /app/wait-for.sh-it.sh
-#RUN chmod +x /app/wait-for.sh-it.sh
+COPY wait-for-it.sh /app/wait-for-it.sh
+RUN chmod +x /app/wait-for-it.sh
 
 # Expose le port 3001 pour le back-end
 EXPOSE 3001
@@ -34,4 +34,4 @@ EXPOSE 3001
 ENV SPRING_PROFILES_ACTIVE=prod
 
 # Utiliser le script de démarrage comme point d'entrée
-CMD ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["/app/wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "/app/app.jar"]
