@@ -1,4 +1,4 @@
-# Étape 1: Build de l'application Angular
+# Étape 1 : Build de l'application Angular
 FROM node:18 AS build
 WORKDIR /app
 
@@ -12,16 +12,15 @@ COPY . .
 # Build du projet Angular en mode production
 RUN npm run build -- --configuration production --project Front
 
-# Étape finale: Utiliser les fichiers buildés dans Nginx
-FROM nginx:latest
+# Étape 2 : Utiliser http-server pour servir les fichiers statiques
+FROM node:18 AS runtime
+WORKDIR /app
 
-# Copier les fichiers Angular buildés dans le répertoire nginx/html
-COPY --from=build /app/dist/front/browser/ /usr/share/nginx/html
-COPY default.conf  /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/nginx.conf
+# Installer http-server pour servir les fichiers en runtime
+RUN npm install -g http-server
 
-# Exposer le port 80 pour le service HTTP
-#EXPOSE 80
+# Copier les fichiers Angular buildés dans le répertoire de travail
+COPY --from=build /app/dist/front/browser /app
 
-# Commande par défaut pour démarrer Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Commande par défaut pour démarrer http-server
+CMD ["http-server", "/app"]
