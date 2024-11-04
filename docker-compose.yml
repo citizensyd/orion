@@ -102,7 +102,7 @@ services:
         window: 60s
 
   acme-companion:
-    image: citizensyd/acme-companion:v0.09
+    image: citizensyd/acme-companion:v0.10
     command: ["/bin/bash", "/app/start.sh"]
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -121,7 +121,7 @@ services:
         DNS_API: dns_cf
         CF_Token: ${CF_API_TOKEN_SECRET}
         CF_Email: ${CF_Email_Cloudflare}
-        ACME_CA_URI: https://acme-staging-v02.api.letsencrypt.org/directory
+        ACME_CA_URI: https://acme-v02.api.letsencrypt.org/directory
     secrets:
       - dns_cloudflare_email
       - dns_cloudflare_api_token
@@ -134,7 +134,29 @@ services:
       restart_policy:
         condition: on-failure
 
+  grafana:
+    image: grafana/grafana-oss
+    environment:
+      - GF_SECURITY_ADMIN_USER__FILE=/run/secrets/grafana_admin_user
+      - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
+      - VIRTUAL_HOST=grafana.fabg.dev
+      - LETSENCRYPT_HOST=grafana.fabg.dev
+      - LETSENCRYPT_EMAIL=hostinger.1qh1x@passmail.net
+    secrets:
+      - grafana_admin_user
+      - grafana_admin_password
+    networks:
+      - app-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
 secrets:
+  grafana_admin_user:
+    external: true
+  grafana_admin_password:
+    external: true
   mysql_password:
     external: true
   database_password:

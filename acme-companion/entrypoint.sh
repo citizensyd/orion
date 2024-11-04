@@ -24,7 +24,7 @@ fi
 export ACMESH_DNS_API_CONFIG="DNS_API: dns_cf
 CF_Token: $CF_API_TOKEN_SECRET
 CF_Email: $CF_Email_Cloudflare
-ACME_CA_URI: https://acme-staging-v02.api.letsencrypt.org/directory"
+ACME_CA_URI: https://acme-v02.api.letsencrypt.org/directory"
 
 # Imprimer toutes les variables d'environnement pour vérification
 echo "Variables d'environnement actuelles :"
